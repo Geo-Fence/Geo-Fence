@@ -1,6 +1,6 @@
 package edu.temple.rollcall;
 
-import com.davidstruewing.rollcall.R;
+import edu.temple.rollcall.R;
 
 import android.app.Activity;
 import android.os.Bundle;
