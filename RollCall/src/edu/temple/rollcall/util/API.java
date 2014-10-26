@@ -1,4 +1,4 @@
-package com.davidstruewing.rollcall.util;
+package edu.temple.rollcall.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
