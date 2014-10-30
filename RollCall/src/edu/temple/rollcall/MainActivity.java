@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
+	String student_id;
+	
 	CardListView cardListView;
 	
 	@Override
@@ -33,12 +35,14 @@ public class MainActivity extends Activity {
 
 		cardListView = (CardListView) findViewById(R.id.card_list);
 		
+		student_id = "1";
 		refreshFeed();
 	}
 	
 	Handler refreshFeedHandler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
+			
 			JSONArray sessions_array = (JSONArray) msg.obj;
 			ArrayList<Card> cards = new ArrayList<Card>();
 			
@@ -57,7 +61,7 @@ public class MainActivity extends Activity {
 			CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(MainActivity.this, cards);
 			cardListView.setAdapter(cardArrayAdapter);
 			
-			return false;
+			return true;
 		}
 	});
 	
@@ -66,13 +70,12 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(){
 				try {
-					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, "1");
+					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, student_id);
 					Message msg = Message.obtain();
 					msg.obj = sessions;
 					
 					refreshFeedHandler.sendMessage(msg);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
