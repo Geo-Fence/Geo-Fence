@@ -13,19 +13,22 @@ import org.json.JSONObject;
 
 import edu.temple.rollcall.R;
 import edu.temple.rollcall.util.API;
+import edu.temple.rollcall.util.UserAccount;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	String student_id;
-	
+	static final int LOGIN_REQUEST = 1;
+		
 	CardListView cardListView;
 	
 	@Override
@@ -35,8 +38,36 @@ public class MainActivity extends Activity {
 
 		cardListView = (CardListView) findViewById(R.id.card_list);
 		
-		student_id = "1";
-		refreshFeed();
+		if(UserAccount.student_id() == null) {
+			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+			startActivityForResult(intent, LOGIN_REQUEST);
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if (requestCode == LOGIN_REQUEST) {
+	        if (resultCode == RESULT_OK) {
+	            refreshFeed();
+	        }
+	    }
+	}
+	
+	private void refreshFeed() {
+		Thread t = new Thread() {
+			@Override
+			public void run(){
+				try {
+					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, UserAccount.student_id());
+					Message msg = Message.obtain();
+					msg.obj = sessions;
+					refreshFeedHandler.sendMessage(msg);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		t.start();
 	}
 	
 	Handler refreshFeedHandler = new Handler(new Handler.Callback() {
@@ -64,22 +95,5 @@ public class MainActivity extends Activity {
 			return true;
 		}
 	});
-	
-	private void refreshFeed() {
-		Thread t = new Thread() {
-			@Override
-			public void run(){
-				try {
-					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, student_id);
-					Message msg = Message.obtain();
-					msg.obj = sessions;
-					
-					refreshFeedHandler.sendMessage(msg);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		t.start();
-	}
+
 }

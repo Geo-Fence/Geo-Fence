@@ -99,4 +99,14 @@ public class API  {
 		}
 		return false;
 	}
+	
+	public static JSONObject login(Context context, String email, String password) {
+		try {
+			String response = makeAPICall(context, "login.php?email=" + email + "&password=" + password);
+			return new JSONObject(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
