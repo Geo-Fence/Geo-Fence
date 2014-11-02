@@ -7,16 +7,19 @@ import android.content.Context;
 
 public class UserAccount {
 	
-	private static String student_id = null;
+	private static String studentId = null;
+	private static String email;
+	private static String firstName;
+	private static String lastName;
 	
-	public static String student_id() {
-		return UserAccount.student_id;
+	public static String studentId() {
+		return UserAccount.studentId;
 	}
 	
 	public static boolean login(Context context, String email, String password) {
 		JSONObject result = API.login(context, email, password);
 		try {
-			student_id = result.getString("id");
+			studentId = result.getString("id");
 			return true;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -26,9 +29,11 @@ public class UserAccount {
 	
 	public static void update(JSONObject account) {
 		try {
-			student_id = account.getString("id");
+			studentId = account.getString("id");
+			email = account.getString("email");
+			firstName = account.getString("first_name");
+			lastName = account.getString("last_name");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

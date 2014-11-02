@@ -174,10 +174,10 @@ int string card_empty_cardwithlist_text 0x7f060003
 int string card_progressbar_cardwithlist_text 0x7f060004
 int string font_fontFamily_medium 0x7f060001
 int string font_fontFamily_regular 0x7f060000
-int string hello_world 0x7f060006
 int string list_card_undo_title 0x7f060002
-int string login 0x7f060008
-int string title_activity_login 0x7f060007
+int string login 0x7f060007
+int string title_activity_login 0x7f060006
+int string title_main_activity 0x7f060008
 int style AppBaseTheme 0x7f090026
 int style AppTheme 0x7f090027
 int style card 0x7f090000

@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 
 		cardListView = (CardListView) findViewById(R.id.card_list);
 		
-		if(UserAccount.student_id() == null) {
+		if(UserAccount.studentId() == null) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivityForResult(intent, LOGIN_REQUEST);
 		}
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(){
 				try {
-					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, UserAccount.student_id());
+					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId());
 					Message msg = Message.obtain();
 					msg.obj = sessions;
 					refreshFeedHandler.sendMessage(msg);

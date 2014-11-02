@@ -273,13 +273,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int card_progressbar_cardwithlist_text=0x7f060004;
         public static final int font_fontFamily_medium=0x7f060001;
         public static final int font_fontFamily_regular=0x7f060000;
-        public static final int hello_world=0x7f060006;
         /**  Undo Controller
  Undo Controller
          */
         public static final int list_card_undo_title=0x7f060002;
-        public static final int login=0x7f060008;
-        public static final int title_activity_login=0x7f060007;
+        public static final int login=0x7f060007;
+        public static final int title_activity_login=0x7f060006;
+        public static final int title_main_activity=0x7f060008;
     }
     public static final class style {
         /** 
