@@ -50,13 +50,14 @@ public class API  {
 	 * Get all upcoming sessions for the specified student.
 	 * @param context
 	 * @param student_id
-	 * @return JSON Array of all upcoming sessions
-	 * @throws Exception
+	 * @return On success, returns a JSON object containing "status":"ok" and an array called "sessions".
+	 * 		   If there are no upcoming sessions, return a JSON object containing "status":"empty".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * See getsessionsforstudent.php for more details.
 	 */
 	public static JSONObject getSessionsForStudent(Context context, String student_id) {
-		String responseStr;
 		try {
-			responseStr = makeAPICall(context, "getsessionsforstudent.php?student_id=" + student_id);
+			String responseStr = makeAPICall(context, "getsessionsforstudent.php?student_id=" + student_id);
 			return new JSONObject(responseStr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,19 +66,23 @@ public class API  {
 	}
 	
 	/**
-	 * Check in the specified student to the specified session
+	 * Check in the specified student to the specified session.
 	 * @param context
 	 * @param student_id
 	 * @param session_id
-	 * @return TRUE if the check in was successful, FALSE if the student has already checked in.
-	 * @throws Exception
+	 * @return On success, returns a JSON object containing "status":"ok".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * See checkin.php for more details.
 	 */
-	public static boolean checkIn(Context context, String student_id, String session_id) throws Exception {
-		String response = makeAPICall(context, "checkin.php?student_id=" + student_id + "&session_id=" + session_id);
-		if(response.equals("success")) {
-			return true;
+	public static JSONObject checkIn(Context context, String student_id, String session_id) {
+		String responseStr;
+		try {
+			responseStr = makeAPICall(context, "checkin.php?student_id=" + student_id + "&session_id=" + session_id);
+			return new JSONObject(responseStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return false;
 	}
 	
 	/**
@@ -85,17 +90,34 @@ public class API  {
 	 * @param context
 	 * @param student_id
 	 * @param session_id
-	 * @return TRUE if the check out was successful, FALSE if the student never checked in.
-	 * @throws Exception
+	 * @return On success, returns a JSON object containing "status":"ok".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * See checkout.php for more details.
 	 */
-	public static boolean checkOut(Context context, String student_id, String session_id) throws Exception {
-		String response = makeAPICall(context, "checkout.php?student_id=" + student_id + "&session_id=" + session_id);
-		if(response.equals("success")) {
-			return true;
+	public static boolean checkOut(Context context, String student_id, String session_id) {
+		try {
+			String response = makeAPICall(context, "checkout.php?student_id=" + student_id + "&session_id=" + session_id);
+			if(response.equals("success")) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 	
+	/**
+	 * Authenticate the email and password and provide account info.
+	 * @param context
+	 * @param email
+	 * @param password
+	 * @return On success, returns a JSON object containing "status":"ok" and account info in an object called "account".
+	 * 		   If the password is incorrect, returns a JSON object containing "status":"incorrect_password".
+	 * 		   If there is no account associated with the email, returns a JSON object containing "status":"incorrect_email".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * See login.php for more details.
+	 */
 	public static JSONObject login(Context context, String email, String password) {
 		try {
 			String response = makeAPICall(context, "login.php?email=" + email + "&password=" + password);
