@@ -4,6 +4,7 @@
     <string name="app_name">Roll Call</string>
     <string name="title_activity_login">Login</string>
     <string name="login">Login</string>
+    <string name="title_activity_info_page">Info</string>
     <string name="title_main_activity">Roll Call</string>
 
 </resources>

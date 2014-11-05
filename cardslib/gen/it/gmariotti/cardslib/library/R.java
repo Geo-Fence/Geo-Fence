@@ -392,19 +392,19 @@ Style for simple title header inner view
           attribute's value can be found in the {@link #ForegroundLinearLayout} array.
           @attr name android:foreground
         */
-        public static int ForegroundLinearLayout_android_foreground = 0;
+        public static final int ForegroundLinearLayout_android_foreground = 0;
         /**
           <p>This symbol is the offset where the {@link android.R.attr#foregroundGravity}
           attribute's value can be found in the {@link #ForegroundLinearLayout} array.
           @attr name android:foregroundGravity
         */
-        public static int ForegroundLinearLayout_android_foregroundGravity = 1;
+        public static final int ForegroundLinearLayout_android_foregroundGravity = 1;
         /**
           <p>This symbol is the offset where the {@link android.R.attr#foregroundInsidePadding}
           attribute's value can be found in the {@link #ForegroundLinearLayout} array.
           @attr name android:foregroundInsidePadding
         */
-        public static int ForegroundLinearLayout_android_foregroundInsidePadding = 2;
+        public static final int ForegroundLinearLayout_android_foregroundInsidePadding = 2;
         /**  Used in card with list
            <p>Includes the following attributes:</p>
            <table>
@@ -435,7 +435,7 @@ containing a value of this type.
           <p>This is a private symbol.
           @attr name it.gmariotti.cardslib.library:card_list_item_dividerHeight
         */
-        public static int card_listItem_card_list_item_dividerHeight = 0;
+        public static final int card_listItem_card_list_item_dividerHeight = 0;
         /** Attributes that can be used with a card_options.
            <p>Includes the following attributes:</p>
            <table>
@@ -469,7 +469,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name it.gmariotti.cardslib.library:card_header_layout_resourceID
         */
-        public static int card_options_card_header_layout_resourceID = 2;
+        public static final int card_options_card_header_layout_resourceID = 2;
         /**
           <p>
           @attr description
@@ -481,7 +481,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name it.gmariotti.cardslib.library:card_layout_resourceID
         */
-        public static int card_options_card_layout_resourceID = 0;
+        public static final int card_options_card_layout_resourceID = 0;
         /**
           <p>
           @attr description
@@ -493,7 +493,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name it.gmariotti.cardslib.library:card_shadow_layout_resourceID
         */
-        public static int card_options_card_shadow_layout_resourceID = 1;
+        public static final int card_options_card_shadow_layout_resourceID = 1;
         /**
           <p>
           @attr description
@@ -505,7 +505,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name it.gmariotti.cardslib.library:card_thumbnail_layout_resourceID
         */
-        public static int card_options_card_thumbnail_layout_resourceID = 3;
+        public static final int card_options_card_thumbnail_layout_resourceID = 3;
         /**
           <p>
           @attr description
@@ -517,6 +517,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>This is a private symbol.
           @attr name it.gmariotti.cardslib.library:list_card_layout_resourceID
         */
-        public static int card_options_list_card_layout_resourceID = 4;
+        public static final int card_options_list_card_layout_resourceID = 4;
     };
 }
