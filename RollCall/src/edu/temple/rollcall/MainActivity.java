@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 					CardFragment listViewDemoFragment = new CardFragment();
 
 					Bundle args = new Bundle();
-					args.putString("sessions", response.getJSONArray("sessions").toString());
+					args.putString("sessionArray", response.getJSONArray("sessionArray").toString());
 					listViewDemoFragment.setArguments(args);
 
 					FragmentManager fm = getFragmentManager();

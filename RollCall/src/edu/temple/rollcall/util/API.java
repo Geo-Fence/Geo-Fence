@@ -47,7 +47,7 @@ public class API  {
 	 * Get all upcoming sessions for the specified student.
 	 * @param context
 	 * @param student_id
-	 * @return On success, returns a JSON object containing "status":"ok" and an array called "sessions".
+	 * @return On success, returns a JSON object containing "status":"ok" and an array called "sessionArray".
 	 * 		   If there are no upcoming sessions, return a JSON object containing "status":"empty".
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
 	 * See getsessionsforstudent.php for more details.
