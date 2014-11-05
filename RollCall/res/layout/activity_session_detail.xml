@@ -6,14 +6,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.temple.rollcall.InfoPage" >
+    tools:context="edu.temple.rollcall.SessionDetailActivity"
+    android:parentActivityName=".MainActivity" >
 
     <TextView
-        android:id="@+id/info_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="" />
+        android:text="@string/hello_world" />
 
 </RelativeLayout>

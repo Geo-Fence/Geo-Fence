@@ -6,5 +6,8 @@
     <string name="login">Login</string>
     <string name="title_activity_info_page">Info</string>
     <string name="title_main_activity">Roll Call</string>
+    <string name="title_activity_session_detail">SessionDetailActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

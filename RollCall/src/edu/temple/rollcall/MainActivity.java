@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
 						card.setOnClickListener(new Card.OnCardClickListener() {
 							@Override
 							public void onClick(Card card, View view) {
-								Intent info = new Intent(getBaseContext(), InfoPage.class);
+								Intent info = new Intent(getBaseContext(), SessionDetailActivity.class);
 								info.putExtra("coursename", card.getTitle());
 								startActivity(info);
 							}
