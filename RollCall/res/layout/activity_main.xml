@@ -15,11 +15,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge" 
         android:visibility="gone"/>
  
-    <it.gmariotti.cardslib.library.view.CardListView
-        android:id="@+id/card_list"
+    <FrameLayout 
+        android:id="@+id/card_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
-        style="@style/list_card.thumbnail"/>
+        android:layout_height="match_parent" />
  
 </LinearLayout>

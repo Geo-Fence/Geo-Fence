@@ -7,10 +7,10 @@ import android.content.Context;
 
 public class UserAccount {
 	
-	private static String studentId = null;
-	private static String email;
-	private static String firstName;
-	private static String lastName;
+	public static String studentId = null;
+	public static String email;
+	public static String firstName;
+	public static String lastName;
 	
 	public static String studentId() {
 		return UserAccount.studentId;

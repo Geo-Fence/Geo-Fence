@@ -6,18 +6,14 @@ import org.json.JSONObject;
 import edu.temple.rollcall.util.API;
 import edu.temple.rollcall.util.UserAccount;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {

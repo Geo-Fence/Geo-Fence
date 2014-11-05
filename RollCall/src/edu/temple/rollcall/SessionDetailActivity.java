@@ -1,15 +1,17 @@
 package edu.temple.rollcall;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 public class SessionDetailActivity extends Activity {
 
-	TextView tvInfo;
+	TextView course_name;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +20,16 @@ public class SessionDetailActivity extends Activity {
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		tvInfo = (TextView) findViewById(R.id.info_name);
+		course_name = (TextView) findViewById(R.id.session_detail_course_name);
 
 		Intent intent = getIntent();
-		tvInfo.setText(intent.getExtras().getString("coursename"));
+		JSONObject sessionInfo = null;
+		try {
+			sessionInfo = new JSONObject(intent.getExtras().getString("sessionInfo"));
+			course_name.setText(sessionInfo.getString("course_name"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
