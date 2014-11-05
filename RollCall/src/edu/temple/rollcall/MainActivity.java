@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
 	static final int LOGIN_REQUEST = 1;
 		
 	CardListView cardListView;
+	TextView feedMessage;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		cardListView = (CardListView) findViewById(R.id.card_list);
+		feedMessage = (TextView) findViewById(R.id.feedMessage);
 		
 		if(UserAccount.studentId() == null) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -61,9 +63,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(){
 				try {
-					JSONArray sessions = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId()); 
+					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId()); 
 					Message msg = Message.obtain();
-					msg.obj = sessions;
+					msg.obj = response;
 					refreshFeedHandler.sendMessage(msg);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,37 +79,85 @@ public class MainActivity extends Activity {
 		@Override
 		public boolean handleMessage(Message msg) {
 			
-			JSONArray sessions_array = (JSONArray) msg.obj;
-			ArrayList<Card> cards = new ArrayList<Card>();
+			JSONObject response = (JSONObject) msg.obj;
 			
-			for(int i = 0 ; i < sessions_array.length() ; i++) {
-				try {
-					JSONObject session = sessions_array.getJSONObject(i);
-					Card card = new Card(MainActivity.this, R.layout.row_card);
-					card.setTitle(session.getString("course_name"));
-					CardThumbnail thumb = new CardThumbnail(MainActivity.this);
-					thumb.setDrawableResource(R.drawable.map_sample);
-					card.addCardThumbnail(thumb);
+			Log.d("JSON", response.toString());
+			
+			try {
+				String status = response.getString("status");
+								
+				switch(status) {
+				case "ok":
+					JSONArray sessions = response.getJSONArray("sessions");
+					ArrayList<Card> cards = new ArrayList<Card>();
+					for(int i = 0 ; i < sessions.length() ; i++) {
+						JSONObject session = sessions.getJSONObject(i);
+						Card card = new Card(MainActivity.this, R.layout.row_card);
+						card.setTitle(session.getString("course_name"));
+						CardThumbnail thumb = new CardThumbnail(MainActivity.this);
+						thumb.setDrawableResource(R.drawable.map_sample);
+						card.addCardThumbnail(thumb);
+						card.setOnClickListener(new Card.OnCardClickListener() {
+							@Override
+							public void onClick(Card card, View view) {
+								Intent info = new Intent(getBaseContext(), InfoPage.class);
+								info.putExtra("coursename", card.getTitle());
+								startActivity(info);
+							}
+						});
+						cards.add(card);
+					}
+					CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(MainActivity.this, cards);
+					cardListView.setAdapter(cardArrayAdapter);
+					feedMessage.setVisibility(View.GONE);
+					break;
 					
-					card.setOnClickListener(new Card.OnCardClickListener() {
-						@Override
-						public void onClick(Card card, View view) {
-							Intent info = new Intent(getBaseContext(), InfoPage.class);
-							info.putExtra("coursename", card.getTitle());
-							startActivity(info);
-						}
-					});
-					cards.add(card);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				case "empty":
+					feedMessage.setText("You have no upcoming sessions.");
+					feedMessage.setVisibility(View.VISIBLE);
+					break;
+				case "error":
+					Log.d("MainActivity", "API Error " + response.getString("errno").toString());
+					break;
 				}
+				
+			} catch (JSONException e1) {
+				e1.printStackTrace();
 			}
 			
-			CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(MainActivity.this, cards);
-			cardListView.setAdapter(cardArrayAdapter);
+			return false;
 			
-			return true;
+//			JSONArray sessions_array = (JSONArray) msg.obj;
+//			ArrayList<Card> cards = new ArrayList<Card>();
+//			
+//			for(int i = 0 ; i < sessions_array.length() ; i++) {
+//				try {
+//					JSONObject session = sessions_array.getJSONObject(i);
+//					Card card = new Card(MainActivity.this, R.layout.row_card);
+//					card.setTitle(session.getString("course_name"));
+//					CardThumbnail thumb = new CardThumbnail(MainActivity.this);
+//					thumb.setDrawableResource(R.drawable.map_sample);
+//					card.addCardThumbnail(thumb);
+//					
+//					card.setOnClickListener(new Card.OnCardClickListener() {
+//						@Override
+//						public void onClick(Card card, View view) {
+//							Intent info = new Intent(getBaseContext(), InfoPage.class);
+//							info.putExtra("coursename", card.getTitle());
+//							startActivity(info);
+//						}
+//					});
+//					cards.add(card);
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//			CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(MainActivity.this, cards);
+//			cardListView.setAdapter(cardArrayAdapter);
+//			
+//			return true;
 		}
 	});
 

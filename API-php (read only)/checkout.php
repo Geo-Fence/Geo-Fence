@@ -1,7 +1,12 @@
 <?php
 
-$mysql = mysql_connect(cus-linux2, tud04734, aweevaim);
-$db = mysql_select_db("Fa14_4340_GeoFence", $mysql);
+// checkout.php
+// Update an attendance table entry with a new end_time
+// Params: student_id, session_id
+// Status values: "ok", "error"
+// Return values: errno on error.
+
+include "util.php";
 
 $query = "UPDATE attendance" .
         " SET time_out=UNIX_TIMESTAMP()" .
@@ -9,10 +14,9 @@ $query = "UPDATE attendance" .
         " AND session_id=" . $_GET["session_id"];
 
 if(mysql_query($query)) {
-        echo "success";
+        echo json_encode(array("status" => "ok"));
 } else {
-        echo "failure";
+        echo json_encode(array("status" => "error", "errno" => mysql_errno() ));
 }
 
 ?>
-

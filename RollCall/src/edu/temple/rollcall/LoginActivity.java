@@ -1,5 +1,6 @@
 package edu.temple.rollcall;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.temple.rollcall.util.API;
@@ -58,26 +59,41 @@ public class LoginActivity extends Activity {
 		
 		@Override
 		public boolean handleMessage(Message msg) {
-			JSONObject result = (JSONObject) msg.obj;
+			JSONObject response = (JSONObject) msg.obj;
 			String status = "";
+			Toast toast;
 			
 			try{
-				status = result.getString("status");
+				status = response.getString("status");
 			} catch (Exception e) {
 				e.printStackTrace();
+				Log.d("LoginActivity", "Error in loginAttemptHandler");
 			}
 			
-			if(status.equals("ok")) {
-				UserAccount.update(result);
-				setResult(RESULT_OK, getIntent());
-				finish();
-				return true;
-			} else {
-				Toast toast = Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT);
+			switch(status) {
+			case "ok":
+				try {
+					UserAccount.update(response.getJSONObject("account"));
+					setResult(RESULT_OK, getIntent());
+					finish();
+					return true;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			case "incorrect_email":
+				toast = Toast.makeText(LoginActivity.this, "No account for that email", Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 				toast.show();
-				return false;
+				break;
+			case "incorrect_password":
+				toast = Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+				toast.show();
+				break;
+			default:
+				Log.d("LoginActivity", "Error in loginAttemptHandler switch statement.");
 			}
+			return false;
 		}
 	});
 }

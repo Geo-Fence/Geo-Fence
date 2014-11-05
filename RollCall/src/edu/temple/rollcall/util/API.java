@@ -53,19 +53,15 @@ public class API  {
 	 * @return JSON Array of all upcoming sessions
 	 * @throws Exception
 	 */
-	public static JSONArray getSessionsForStudent(Context context, String student_id) throws Exception {
-		
-		String response = makeAPICall(context, "getsessionsforstudent.php?student_id=" + student_id);
-		
+	public static JSONObject getSessionsForStudent(Context context, String student_id) {
+		String responseStr;
 		try {
-            JSONObject responseObject = new JSONObject(response);
-            return responseObject.getJSONArray("sessions");
-        } catch (JSONException e) {
-            Log.i("JSON Error in: ", response);
-            e.printStackTrace();
-        }
-		
-		return null;
+			responseStr = makeAPICall(context, "getsessionsforstudent.php?student_id=" + student_id);
+			return new JSONObject(responseStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
