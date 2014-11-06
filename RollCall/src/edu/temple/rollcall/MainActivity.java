@@ -13,6 +13,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +36,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		setTitle(R.string.title_activity_main);
 
 		feedMessage = (TextView) findViewById(R.id.feedMessage);
 
@@ -45,6 +49,8 @@ public class MainActivity extends Activity {
 		
 		if(getIntent().getAction() == "logout") {
 			logout();
+		} else if (getIntent().getAction() == "refresh") {
+			refreshFeed();
 		}
 	}
 	
@@ -52,24 +58,30 @@ public class MainActivity extends Activity {
 	  public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
+	    
+	    Drawable refreshIcon = getResources().getDrawable(R.drawable.ic_action_refresh);
+	    MenuItem home = menu.findItem(R.id.action_home);
+	    home.setIcon(refreshIcon);
+	    
 	    return true;
 	  } 
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
 	    switch (item.getItemId()) {
-	    case R.id.action_refresh:
+	    case R.id.action_home:
 	    	refreshFeed();
 	    	break;
 	    case R.id.action_logout:
 	    	logout();
 	    	break;
 	    case R.id.action_account:
-//	    	Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
-//	    	startActivity(intent);
-//	    	break;
+	    	Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
+	    	startActivity(intent);
+	    	break;
 	    }
-	    return super.onOptionsItemSelected(item);
+	    return false;
 	}
 
 	@Override

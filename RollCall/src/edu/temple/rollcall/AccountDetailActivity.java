@@ -1,13 +1,8 @@
 package edu.temple.rollcall;
 
-import org.json.JSONException;
-import android.graphics.PorterDuff;
-
-import org.json.JSONObject;
-
+import edu.temple.rollcall.util.UserAccount;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,32 +11,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class SessionDetailActivity extends Activity {
+public class AccountDetailActivity extends Activity {
 
-	TextView course_name;
+	TextView name;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_session_detail);
+		setContentView(R.layout.activity_account_detail);
 		getActionBar().setDisplayShowHomeEnabled(false);
-				
-		course_name = (TextView) findViewById(R.id.session_detail_course_name);
-
-		Intent intent = getIntent();
-		JSONObject sessionInfo = null;
-		try {
-			sessionInfo = new JSONObject(intent.getExtras().getString("sessionInfo"));
-			course_name.setText(sessionInfo.getString("course_name"));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		
+		name = (TextView) findViewById(R.id.name);
+		name.setText(UserAccount.firstName + " " + UserAccount.lastName);
 	}
 	
 	@Override
 	  public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
+	    
+	    Drawable editIcon = getResources().getDrawable(R.drawable.ic_action_edit);
+	    MenuItem account = menu.findItem(R.id.action_account);
+	    account.setIcon(editIcon);
+	    account.setEnabled(false);
 	    
 	    return true;
 	  } 
@@ -51,20 +43,19 @@ public class SessionDetailActivity extends Activity {
 		Intent intent;
 	    switch (item.getItemId()) {
 	    case R.id.action_home:
-	        intent = new Intent(SessionDetailActivity.this, MainActivity.class);
+	    	intent = new Intent(AccountDetailActivity.this, MainActivity.class);
 	        intent.setAction("refresh");
 	        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        startActivity(intent);
 	        break;
 	    case R.id.action_logout:
-	    	intent = new Intent(SessionDetailActivity.this, MainActivity.class);
+	    	intent = new Intent(AccountDetailActivity.this, MainActivity.class);
 	    	intent.setAction("logout");
 	    	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	    	startActivity(intent);
 	    	break;
 	    case R.id.action_account:
-	    	intent = new Intent(SessionDetailActivity.this, AccountDetailActivity.class);
-	    	startActivity(intent);
+	    	// Edit account info...
 	    	break;
 	    }
 	    return super.onOptionsItemSelected(item);

@@ -4,10 +4,9 @@
     <string name="app_name">Roll Call</string>
     <string name="title_activity_login">Login</string>
     <string name="login">Login</string>
-    <string name="title_main_activity">Upcoming Sessions</string>
+    <string name="title_activity_main">Upcoming Sessions</string>
     <string name="title_activity_session_detail">Session Details</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_account_detail">AccountDetailActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_account_detail">Account Details</string>
 
 </resources>
