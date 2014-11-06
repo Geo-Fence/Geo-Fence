@@ -4,7 +4,7 @@
 // Update an attendance table entry with a new end_time
 // Params: student_id, session_id
 // Status values: "ok", "error"
-// Return values: errno on error.
+// Additional JSON elements: errno on error
 
 include "util.php";
 

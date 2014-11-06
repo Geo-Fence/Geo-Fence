@@ -107,21 +107,21 @@ public class MainActivity extends Activity {
 				
 				switch(status) {
 				case "ok":
-					CardListFragment cardListFragment = new CardListFragment();
+					if(response.getJSONArray("sessionArray").isNull(0)) {
+						feedMessage.setText("You have no upcoming sessions.");
+						feedMessage.setVisibility(View.VISIBLE);
+					} else {
+						CardListFragment cardListFragment = new CardListFragment();
 
-					Bundle args = new Bundle();
-					args.putString("sessionArray", response.getJSONArray("sessionArray").toString());
-					cardListFragment.setArguments(args);
+						Bundle args = new Bundle();
+						args.putString("sessionArray", response.getJSONArray("sessionArray").toString());
+						cardListFragment.setArguments(args);
 
-					FragmentManager fm = getFragmentManager();
-					FragmentTransaction ft = fm.beginTransaction();
-					ft.add(R.id.card_container, cardListFragment);
-					ft.commit();
-			
-					break;
-				case "empty":
-					feedMessage.setText("You have no upcoming sessions.");
-					feedMessage.setVisibility(View.VISIBLE);
+						FragmentManager fm = getFragmentManager();
+						FragmentTransaction ft = fm.beginTransaction();
+						ft.add(R.id.card_container, cardListFragment);
+						ft.commit();
+					}
 					break;
 				case "error":
 					Log.d("MainActivity", "API Error " + response.getString("errno").toString());

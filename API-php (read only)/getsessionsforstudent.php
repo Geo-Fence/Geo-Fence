@@ -3,8 +3,8 @@
 // getstudentsessions.php
 // Returns all of the upcoming sessions for a student
 // Params: student_id
-// Status values: "ok", "empty", "error"
-// Return values: JSON array of sessions on success, errno on error
+// Status values: "ok", "error"
+// Additional JSON elements: JSON array of sessions on success, errno on error
 
 include "util.php";
 
@@ -22,23 +22,17 @@ $query = "SELECT s.id AS session_id," .
         " AND s.end_time >= UNIX_TIMESTAMP()" .
         " ORDER BY s.start_time ASC";
 
-$result = mysql_query($query);
-
-if(mysql_num_rows($result) > 0) {
+if($result = mysql_query($query)) {
 
         $sessions = array();
         while($entity = mysql_fetch_array($result, MYSQL_ASSOC)) {
                 array_push($sessions, $entity);
         }
 
-        echo json_encode(array("status" => "ok", "sessions" => $sessions));
+        echo json_encode(array("status" => "ok", "sessionArray" => $sessions));
 
 } else {
-        if(mysql_errno() === 0) {
-                echo json_encode(array("status" => "empty"));
-        } else {
-                echo json_encode(array("status" => "error", "errno" => mysql_errno() ));
-        }
+        echo json_encode(array("status" => "error", "errno" => mysql_errno() ));
 }
 
 ?>

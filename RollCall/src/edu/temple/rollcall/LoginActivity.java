@@ -63,33 +63,24 @@ public class LoginActivity extends Activity {
 			
 			try{
 				status = response.getString("status");
-			} catch (Exception e) {
-				e.printStackTrace();
-				Log.d("LoginActivity", "Error in loginAttemptHandler");
-			}
-			
-			switch(status) {
-			case "ok":
-				try {
+				switch(status) {
+				case "ok":
 					UserAccount.update(response.getJSONObject("account"));
 					setResult(RESULT_OK, getIntent());
 					finish();
-					return true;
-				} catch (JSONException e) {
-					e.printStackTrace();
+					break;
+				case "error":
+					if(response.getInt("errno") == 0) {
+						toast = Toast.makeText(LoginActivity.this, "Incorrect email or password", Toast.LENGTH_LONG);
+						toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+						toast.show();
+					} else {
+						Log.d("LoginActivity", "API Error " + response.getString("errno").toString());
+					}
 				}
-			case "incorrect_email":
-				toast = Toast.makeText(LoginActivity.this, "No account for that email", Toast.LENGTH_LONG);
-				toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-				toast.show();
-				break;
-			case "incorrect_password":
-				toast = Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-				toast.show();
-				break;
-			default:
-				Log.d("LoginActivity", "Error in loginAttemptHandler switch statement.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.d("LoginActivity", "Error in loginAttemptHandler");
 			}
 			return false;
 		}
