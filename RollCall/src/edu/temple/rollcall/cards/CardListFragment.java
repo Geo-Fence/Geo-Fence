@@ -16,12 +16,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-public class CardFragment extends ListFragment {
-		private List<Card> mItems;        // ListView items list
+public class CardListFragment extends ListFragment {
+	
+		private List<Card> cardItems;
 		 
-		public static final CardFragment newInstance(String sessionArray)
+		public static final CardListFragment newInstance(String sessionArray)
 		{
-			CardFragment fragment = new CardFragment();
+			CardListFragment fragment = new CardListFragment();
 		    Bundle bundle = new Bundle(1);
 		    bundle.putString("sessionArray", sessionArray);
 		    fragment.setArguments(bundle);
@@ -41,21 +42,19 @@ public class CardFragment extends ListFragment {
 				e.printStackTrace();
 			}
 	        
-	        // initialize the items list
-	        mItems = new ArrayList<Card>();
+	        cardItems = new ArrayList<Card>();
 
 	        for(int i = 0 ; i < sessionArray.length() ; i++) {
 	        	JSONObject sessionInfo;
 				try {
 					sessionInfo = sessionArray.getJSONObject(i);
-		        	mItems.add(new Card(getResources().getDrawable(R.drawable.map_sample), sessionInfo));
+					cardItems.add(new Card(getResources().getDrawable(R.drawable.map_sample), sessionInfo));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 	        }
 	        	
-	        // initialize and set the list adapter
-	        setListAdapter(new CardAdapter(getActivity(), mItems));
+	        setListAdapter(new CardListAdapter(getActivity(), cardItems));
 	    }
 	    
 	    @Override
@@ -66,10 +65,11 @@ public class CardFragment extends ListFragment {
 	 
 	    @Override
 	    public void onListItemClick(ListView l, View v, int position, long id) {
-	        Card card = mItems.get(position);
+	        Card card = cardItems.get(position);
 	        
 	        Intent intent = new Intent(getActivity(), SessionDetailActivity.class);
 	        intent.putExtra("sessionInfo", card.sessionInfo.toString());
+	        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	        startActivity(intent);
 	    }
 	}

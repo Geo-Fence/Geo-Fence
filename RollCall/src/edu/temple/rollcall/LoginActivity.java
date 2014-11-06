@@ -32,6 +32,8 @@ public class LoginActivity extends Activity {
 		login_button = (Button) findViewById(R.id.login);
 		
 		login_button.setOnClickListener(login_button_listener);
+		
+		getActionBar().setDisplayShowHomeEnabled(false);
 	}
 	
 	View.OnClickListener login_button_listener = new View.OnClickListener() {

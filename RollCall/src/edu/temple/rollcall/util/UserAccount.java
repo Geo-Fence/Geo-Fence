@@ -37,5 +37,12 @@ public class UserAccount {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void logout() {
+		studentId = null;
+		email = null;
+		firstName = null;
+		lastName = null;
+	}
 
 }

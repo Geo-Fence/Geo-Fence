@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/action_account"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_person"
+        android:title="Account"/>
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="200"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="Refresh"/>
+    
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="300"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_cancel"
+        android:title="Logout"/>
+</menu>

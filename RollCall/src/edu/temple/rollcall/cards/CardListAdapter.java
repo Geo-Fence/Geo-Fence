@@ -12,9 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CardAdapter extends ArrayAdapter<Card> {
+public class CardListAdapter extends ArrayAdapter<Card> {
 	 
-    public CardAdapter(Context context, List<Card> items) {
+    public CardListAdapter(Context context, List<Card> items) {
         super(context, R.layout.card_item, items);
     }
  
