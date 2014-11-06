@@ -9,13 +9,9 @@ import edu.temple.rollcall.util.API;
 import edu.temple.rollcall.util.UserAccount;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -46,42 +43,31 @@ public class MainActivity extends Activity {
 		}
 		
 		getActionBar().setDisplayShowHomeEnabled(false);
-		
-		if(getIntent().getAction() == "logout") {
-			logout();
-		} else if (getIntent().getAction() == "refresh") {
-			refreshFeed();
-		}
 	}
 	
 	@Override
 	  public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
-	    
-	    Drawable refreshIcon = getResources().getDrawable(R.drawable.ic_action_refresh);
-	    MenuItem home = menu.findItem(R.id.action_home);
-	    home.setIcon(refreshIcon);
-	    
 	    return true;
 	  } 
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
+		Intent intent;
 	    switch (item.getItemId()) {
-	    case R.id.action_home:
+	    case R.id.action_refresh:
 	    	refreshFeed();
 	    	break;
-	    case R.id.action_logout:
-	    	logout();
-	    	break;
-	    case R.id.action_account:
-	    	Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
+	    case R.id.action_view_account:
+	    	intent = new Intent(MainActivity.this, AccountDetailActivity.class);
 	    	startActivity(intent);
 	    	break;
+	    case R.id.action_log_out:
+	    	logout();
+	    	break;
 	    }
-	    return false;
+	    return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -151,15 +137,9 @@ public class MainActivity extends Activity {
 	});
 	
 	private void logout() {
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		Fragment cardContainer = fm.findFragmentById(R.id.card_container);
-		if(cardContainer != null) {
-			ft.remove(cardContainer);
-		} else {
-			feedMessage.setVisibility(View.GONE);
-		}
-		ft.commit();
+		FrameLayout cardContainer = (FrameLayout) findViewById(R.id.card_container);
+		cardContainer.removeAllViews();
+		feedMessage.setVisibility(View.GONE);
 		
 		UserAccount.logout();
 		
