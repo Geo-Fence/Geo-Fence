@@ -3,14 +3,17 @@
 
     <string name="app_name">Roll Call</string>
     <string name="title_activity_login">Login</string>
-    <string name="login_button">Sign in</string>
     <string name="title_activity_main">Upcoming Sessions</string>
-    <string name="title_activity_session_detail">Session Details</string>
-    <string name="title_activity_account_detail">Account Details</string>
+    <string name="title_activity_enroll">Back</string>
+    <string name="title_activity_session_detail">Back</string>
+    <string name="title_activity_account_detail">Back</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_enroll">Enroll</string>
     <string name="action_view_account">View account</string>
     <string name="action_log_out">Sign out</string>
     <string name="email_hint">email</string>
     <string name="password_hint">password</string>
+    <string name="login_button">Sign in</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

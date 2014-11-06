@@ -1,6 +1,5 @@
 package edu.temple.rollcall;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.temple.rollcall.util.API;

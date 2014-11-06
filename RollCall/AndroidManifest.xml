@@ -5,9 +5,9 @@
     android:versionName="1.0" >
 
     <uses-sdk
+        android:maxSdkVersion="20"
         android:minSdkVersion="19"
-        android:targetSdkVersion="19"
-        android:maxSdkVersion="20" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -36,6 +36,10 @@
         <activity
             android:name=".AccountDetailActivity"
             android:label="@string/title_activity_account_detail" >
+        </activity>
+        <activity
+            android:name=".EnrollActivity"
+            android:label="@string/title_activity_enroll" >
         </activity>
     </application>
 

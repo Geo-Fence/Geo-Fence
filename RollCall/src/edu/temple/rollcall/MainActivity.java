@@ -59,6 +59,10 @@ public class MainActivity extends Activity {
 	    case R.id.action_refresh:
 	    	refreshFeed();
 	    	break;
+	    case R.id.action_enroll:
+	    	intent = new Intent(MainActivity.this, EnrollActivity.class);
+	    	startActivity(intent);
+	    	break;
 	    case R.id.action_view_account:
 	    	intent = new Intent(MainActivity.this, AccountDetailActivity.class);
 	    	startActivity(intent);
