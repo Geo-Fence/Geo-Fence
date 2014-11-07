@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -28,6 +29,8 @@ public class MainActivity extends Activity {
 	static final int LOGIN_REQUEST = 1;
 
 	TextView feedMessage;
+	ProgressBar refreshSpinner;
+	FrameLayout cardListContainer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,9 @@ public class MainActivity extends Activity {
 		setTitle(R.string.title_activity_main);
 		getActionBar().setDisplayShowHomeEnabled(false);
 
-		feedMessage = (TextView) findViewById(R.id.feedMessage);
+		feedMessage = (TextView) findViewById(R.id.feed_message);
+		refreshSpinner = (ProgressBar) findViewById(R.id.refresh_spinner);
+		cardListContainer = (FrameLayout) findViewById(R.id.card_layout_container);
 
 		if(UserAccount.studentId == null) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -88,10 +93,13 @@ public class MainActivity extends Activity {
 	}
 
 	private void refreshFeed() {
+		cardListContainer.removeAllViews();
+		refreshSpinner.setVisibility(View.VISIBLE);
 		Thread t = new Thread() {
 			@Override
 			public void run(){
 				try {
+					sleep(1000);
 					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId); 
 					Message msg = Message.obtain();
 					msg.obj = response;
@@ -107,11 +115,10 @@ public class MainActivity extends Activity {
 	Handler refreshFeedHandler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
+			refreshSpinner.setVisibility(View.GONE);
 			JSONObject response = (JSONObject) msg.obj;
-			
 			try {
-				String status = response.getString("status");
-				
+				String status = response.getString("status");	
 				switch(status) {
 				case "ok":
 					if(response.getJSONArray("sessionArray").isNull(0)) {
@@ -126,7 +133,7 @@ public class MainActivity extends Activity {
 
 						FragmentManager fm = getFragmentManager();
 						FragmentTransaction ft = fm.beginTransaction();
-						ft.add(R.id.card_container, cardListFragment);
+						ft.add(cardListContainer.getId(), cardListFragment);
 						ft.commit();
 					}
 					break;
@@ -144,8 +151,7 @@ public class MainActivity extends Activity {
 	});
 	
 	private void logout() {
-		FrameLayout cardContainer = (FrameLayout) findViewById(R.id.card_container);
-		cardContainer.removeAllViews();
+		cardListContainer.removeAllViews();
 		feedMessage.setVisibility(View.GONE);
 		
 		UserAccount.logout();
