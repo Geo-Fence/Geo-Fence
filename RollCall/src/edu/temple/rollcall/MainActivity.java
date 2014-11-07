@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import edu.temple.rollcall.R;
 import edu.temple.rollcall.cards.CardListFragment;
 import edu.temple.rollcall.util.API;
+import edu.temple.rollcall.util.EmptyFeedFragment;
 import edu.temple.rollcall.util.UserAccount;
 
 import android.app.Activity;
@@ -122,8 +123,11 @@ public class MainActivity extends Activity {
 				switch(status) {
 				case "ok":
 					if(response.getJSONArray("sessionArray").isNull(0)) {
-						feedMessage.setText("You have no upcoming sessions.");
-						feedMessage.setVisibility(View.VISIBLE);
+						FragmentManager fm = getFragmentManager();
+						FragmentTransaction ft = fm.beginTransaction();
+						EmptyFeedFragment emptyFeedFragment = new EmptyFeedFragment();
+						ft.add(cardListContainer.getId() , emptyFeedFragment);
+						ft.commit();
 					} else {
 						CardListFragment cardListFragment = new CardListFragment();
 
