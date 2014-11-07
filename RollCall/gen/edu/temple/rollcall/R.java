@@ -28,20 +28,23 @@ public final class R {
         public static final int map_sample=0x7f020003;
     }
     public static final class id {
-        public static final int action_enroll=0x7f08000b;
-        public static final int action_log_out=0x7f08000d;
-        public static final int action_refresh=0x7f08000a;
-        public static final int action_view_account=0x7f08000c;
-        public static final int card_container=0x7f080005;
-        public static final int card_course_name=0x7f080008;
-        public static final int card_icon=0x7f080007;
-        public static final int card_teacher_name=0x7f080009;
-        public static final int email=0x7f080001;
-        public static final int feedMessage=0x7f080004;
-        public static final int login=0x7f080003;
+        public static final int action_enroll=0x7f08000e;
+        public static final int action_log_out=0x7f080010;
+        public static final int action_refresh=0x7f08000d;
+        public static final int action_view_account=0x7f08000f;
+        public static final int card_container=0x7f080008;
+        public static final int card_course_name=0x7f08000b;
+        public static final int card_icon=0x7f08000a;
+        public static final int card_teacher_name=0x7f08000c;
+        public static final int email=0x7f080004;
+        public static final int enroll_button=0x7f080003;
+        public static final int enroll_title=0x7f080001;
+        public static final int enrollment_code_field=0x7f080002;
+        public static final int feedMessage=0x7f080007;
+        public static final int login=0x7f080006;
         public static final int name=0x7f080000;
-        public static final int password=0x7f080002;
-        public static final int session_detail_course_name=0x7f080006;
+        public static final int password=0x7f080005;
+        public static final int session_detail_course_name=0x7f080009;
     }
     public static final class layout {
         public static final int activity_account_detail=0x7f030000;
@@ -55,20 +58,22 @@ public final class R {
         public static final int menu=0x7f070000;
     }
     public static final class string {
-        public static final int action_enroll=0x7f050006;
-        public static final int action_log_out=0x7f050008;
-        public static final int action_refresh=0x7f050005;
-        public static final int action_view_account=0x7f050007;
+        public static final int action_enroll=0x7f050007;
+        public static final int action_log_out=0x7f050009;
+        public static final int action_refresh=0x7f050006;
+        public static final int action_view_account=0x7f050008;
         public static final int app_name=0x7f050000;
-        public static final int email_hint=0x7f050009;
-        public static final int hello_world=0x7f05000d;
-        public static final int login_button=0x7f05000b;
-        public static final int password_hint=0x7f05000a;
-        public static final int title_activity_account_detail=0x7f050004;
-        public static final int title_activity_enroll=0x7f05000c;
+        public static final int email_hint=0x7f05000a;
+        public static final int enroll_button=0x7f05000d;
+        public static final int enroll_title=0x7f05000e;
+        public static final int hello_world=0x7f05000f;
+        public static final int login_button=0x7f05000c;
+        public static final int password_hint=0x7f05000b;
+        public static final int title_activity_account_detail=0x7f050005;
+        public static final int title_activity_enroll=0x7f050003;
         public static final int title_activity_login=0x7f050001;
         public static final int title_activity_main=0x7f050002;
-        public static final int title_activity_session_detail=0x7f050003;
+        public static final int title_activity_session_detail=0x7f050004;
     }
     public static final class style {
         /** 

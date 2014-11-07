@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
+import android.util.Log;
 
 public class API  {
 	static final String APIBaseURL = "http://cis-linux2.temple.edu/~tud04734/api/";
@@ -109,14 +110,32 @@ public class API  {
 	 * @param email
 	 * @param password
 	 * @return On success, returns a JSON object containing "status":"ok" and account info in an object called "account".
-	 * 		   If the password is incorrect, returns a JSON object containing "status":"incorrect_password".
-	 * 		   If there is no account associated with the email, returns a JSON object containing "status":"incorrect_email".
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * 		   If errno is 0, that means the login was unsuccessful because of invalid email/password.
 	 * See login.php for more details.
 	 */
 	public static JSONObject login(Context context, String email, String password) {
 		try {
 			String response = makeAPICall(context, "login.php?email=" + email + "&password=" + password);
+			return new JSONObject(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Enroll user into a course.
+	 * @param context
+	 * @param enrollmentCode
+	 * @return On success, returns a JSON object containing "status":"ok".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * 		   If errno is 0, that means the enrollment code was invalid.
+	 * See login.php for more details.
+	 */
+	public static JSONObject enroll(Context context, String studentId, String enrollmentCode) {
+		try {
+			String response = makeAPICall(context, "enroll.php?student_id=" + studentId + "&enrollment_code=" + enrollmentCode);
 			return new JSONObject(response);
 		} catch (Exception e) {
 			e.printStackTrace();

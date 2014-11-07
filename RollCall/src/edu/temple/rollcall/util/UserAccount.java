@@ -12,10 +12,6 @@ public class UserAccount {
 	public static String firstName;
 	public static String lastName;
 	
-	public static String studentId() {
-		return UserAccount.studentId;
-	}
-	
 	public static boolean login(Context context, String email, String password) {
 		JSONObject result = API.login(context, email, password);
 		try {

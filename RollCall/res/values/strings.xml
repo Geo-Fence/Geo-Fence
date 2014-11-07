@@ -14,6 +14,8 @@
     <string name="email_hint">email</string>
     <string name="password_hint">password</string>
     <string name="login_button">Sign in</string>
+    <string name="enroll_button">Enroll</string>
+    <string name="enroll_title">Enter the enrollment code provided by your instructor.</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

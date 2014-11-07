@@ -34,15 +34,18 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setTitle(R.string.title_activity_main);
+		getActionBar().setDisplayShowHomeEnabled(false);
 
 		feedMessage = (TextView) findViewById(R.id.feedMessage);
 
-		if(UserAccount.studentId() == null) {
+		if(UserAccount.studentId == null) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivityForResult(intent, LOGIN_REQUEST);
 		}
 		
-		getActionBar().setDisplayShowHomeEnabled(false);
+		if(getIntent().getAction().equals("refresh")) {
+			refreshFeed();
+		}
 	}
 	
 	@Override
@@ -89,7 +92,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(){
 				try {
-					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId()); 
+					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId); 
 					Message msg = Message.obtain();
 					msg.obj = response;
 					refreshFeedHandler.sendMessage(msg);
@@ -128,7 +131,7 @@ public class MainActivity extends Activity {
 					}
 					break;
 				case "error":
-					Log.d("MainActivity", "API Error " + response.getString("errno").toString());
+					Log.d("MainActivity", "MySQL error " + response.getString("errno").toString());
 					break;
 				}
 

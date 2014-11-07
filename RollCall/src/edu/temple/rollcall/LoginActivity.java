@@ -19,7 +19,7 @@ public class LoginActivity extends Activity {
 
 	EditText email;
 	EditText password;
-	Button login_button; 
+	Button loginButton; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +28,14 @@ public class LoginActivity extends Activity {
 
 		email = (EditText) findViewById(R.id.email);
 		password = (EditText) findViewById(R.id.password);
-		login_button = (Button) findViewById(R.id.login);
+		loginButton = (Button) findViewById(R.id.login);
 		
-		login_button.setOnClickListener(login_button_listener);
+		loginButton.setOnClickListener(loginButtonListener);
 		
 		getActionBar().setDisplayShowHomeEnabled(false);
 	}
 	
-	View.OnClickListener login_button_listener = new View.OnClickListener() {
+	View.OnClickListener loginButtonListener = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
@@ -70,11 +70,11 @@ public class LoginActivity extends Activity {
 					break;
 				case "error":
 					if(response.getInt("errno") == 0) {
-						toast = Toast.makeText(LoginActivity.this, "Incorrect email or password", Toast.LENGTH_LONG);
+						toast = Toast.makeText(LoginActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT);
 						toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 						toast.show();
 					} else {
-						Log.d("LoginActivity", "API Error " + response.getString("errno").toString());
+						Log.d("LoginActivity", "MySQL error " + response.getString("errno").toString());
 					}
 				}
 			} catch (Exception e) {
