@@ -2,6 +2,8 @@ package edu.temple.rollcall.cards;
 
 import java.util.List;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import edu.temple.rollcall.R;
 
 import android.content.Context;
@@ -23,7 +25,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         ViewHolder viewHolder;
         
         if(convertView == null) {
-            // inflate the GridView item layout
+            // inflate the layout
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.card_item, parent, false);
             
@@ -39,10 +41,11 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         }
         
         // update the item view
-        Card item = getItem(position);
-        viewHolder.icon.setImageDrawable(item.icon);
-        viewHolder.course_name.setText(item.course_name);
-        viewHolder.teacher_name.setText(item.teacher_name);
+        Card card = getItem(position);
+        ImageLoader.getInstance().displayImage(card.thumbURL, viewHolder.icon);
+        //viewHolder.icon.setImageDrawable(card.icon);
+        viewHolder.course_name.setText(card.course_name);
+        viewHolder.teacher_name.setText(card.teacher_name);
         
         return convertView;
     }

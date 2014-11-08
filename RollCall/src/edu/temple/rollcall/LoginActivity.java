@@ -76,6 +76,11 @@ public class LoginActivity extends Activity {
 					} else {
 						Log.d("LoginActivity", "MySQL error " + response.getString("errno").toString());
 					}
+					break;
+				case "network-error":
+					toast = Toast.makeText(LoginActivity.this, "Network error. Please check your connection and try again.", Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+					toast.show();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

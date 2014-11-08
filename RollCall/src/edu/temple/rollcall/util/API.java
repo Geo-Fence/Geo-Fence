@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -111,7 +113,7 @@ public class API  {
 	 * @param password
 	 * @return On success, returns a JSON object containing "status":"ok" and account info in an object called "account".
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
-	 * 		   If errno is 0, that means the login was unsuccessful because of invalid email/password.
+	 * 		   Errno 0 means the login was unsuccessful because of invalid email/password.
 	 * See login.php for more details.
 	 */
 	public static JSONObject login(Context context, String email, String password) {
@@ -130,7 +132,8 @@ public class API  {
 	 * @param enrollmentCode
 	 * @return On success, returns a JSON object containing "status":"ok".
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
-	 * 		   If errno is 0, that means the enrollment code was invalid.
+	 * 		   Errno 0 means the enrollment code was invalid.
+	 * 		   Errno 1062 means the student is already enrolled in the course.
 	 * See login.php for more details.
 	 */
 	public static JSONObject enroll(Context context, String studentId, String enrollmentCode) {

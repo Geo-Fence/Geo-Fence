@@ -23,13 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	static final int LOGIN_REQUEST = 1;
 
-	TextView feedMessage;
 	ProgressBar refreshSpinner;
 	FrameLayout cardListContainer;
 
@@ -40,7 +38,6 @@ public class MainActivity extends Activity {
 		setTitle(R.string.title_activity_main);
 		getActionBar().setDisplayShowHomeEnabled(false);
 
-		feedMessage = (TextView) findViewById(R.id.feed_message);
 		refreshSpinner = (ProgressBar) findViewById(R.id.refresh_spinner);
 		cardListContainer = (FrameLayout) findViewById(R.id.card_layout_container);
 
@@ -100,7 +97,6 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(){
 				try {
-					sleep(1000);
 					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId); 
 					Message msg = Message.obtain();
 					msg.obj = response;
@@ -156,7 +152,6 @@ public class MainActivity extends Activity {
 	
 	private void logout() {
 		cardListContainer.removeAllViews();
-		feedMessage.setVisibility(View.GONE);
 		
 		UserAccount.logout();
 		
