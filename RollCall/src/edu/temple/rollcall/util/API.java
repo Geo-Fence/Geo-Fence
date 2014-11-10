@@ -16,7 +16,7 @@ import android.content.Context;
 import android.net.http.AndroidHttpClient;
 
 public class API  {
-	static final String APIBaseURL = "http://cis-linux2.temple.edu/~tud04734/api/";
+	static final String APIBaseURL = "http://cis-linux2.temple.edu/~tud04734/rollcall/api/";
 	
 	private static String makeAPICall(Context context, String api) throws ClientProtocolException, IOException {
     	AndroidHttpClient client = AndroidHttpClient.newInstance("Android", context);

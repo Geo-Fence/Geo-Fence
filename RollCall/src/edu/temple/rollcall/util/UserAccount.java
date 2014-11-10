@@ -3,8 +3,6 @@ package edu.temple.rollcall.util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-
 // Static class contains user credentials. No instance required, all variables are static.
 public class UserAccount {
 	

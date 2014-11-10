@@ -6,8 +6,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import edu.temple.rollcall.RollCall;
-
 public class RollCallUtil {
 	
 	public static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 2222;

@@ -72,8 +72,8 @@ public class Card {
     			String message = "Begins in";
     			if(hours > 1) message += " " + hours + " hours";
     			else if(hours == 1) message += " " + hours + " hour";
-    			if(minutes > 1) message += " " + minutes + " minutes.";
-    			else if(minutes == 1) message += " " + minutes + " minute.";
+    			if(minutes > 1) message += ", " + minutes + " minutes.";
+    			else if(minutes == 1) message += ", " + minutes + " minute.";
     			else if(minutes == 0) message += ".";
     			if(hours == 0 && minutes == 0) message += " less than a minute.";
     			this.output = message;

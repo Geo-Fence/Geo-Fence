@@ -3,18 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp" >
+    xmlns:card="http://schemas.android.com/apk/res-auto" 
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
 
-    <TextView
-        android:id="@+id/feed_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" 
-        android:visibility="gone"/>
-    
     <ProgressBar
         android:id="@+id/refresh_spinner"
         style="?android:attr/progressBarStyleLarge"
