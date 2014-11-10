@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.temple.rollcall.R;
 import edu.temple.rollcall.SessionDetailActivity;
 
 import android.app.ListFragment;

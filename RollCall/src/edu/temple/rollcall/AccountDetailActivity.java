@@ -1,5 +1,6 @@
 package edu.temple.rollcall;
 
+import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.UserAccount;
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,6 +20,12 @@ public class AccountDetailActivity extends Activity {
 		
 		name = (TextView) findViewById(R.id.name);
 		name.setText(UserAccount.firstName + " " + UserAccount.lastName);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		RollCallUtil.checkPlayServices(this);
 	}
 	
 	@Override

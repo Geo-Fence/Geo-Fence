@@ -3,6 +3,7 @@ package edu.temple.rollcall;
 import org.json.JSONObject;
 
 import edu.temple.rollcall.util.API;
+import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.UserAccount;
 import android.app.Activity;
 import android.content.Intent;
@@ -36,6 +37,12 @@ public class EnrollActivity extends Activity {
 		enroll_button = (Button) findViewById(R.id.enroll_button);
 		
 		enroll_button.setOnClickListener(enrollButtonListener);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		RollCallUtil.checkPlayServices(this);
 	}
 	
 	View.OnClickListener enrollButtonListener = new View.OnClickListener() {

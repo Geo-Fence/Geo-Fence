@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="@string/empty_feed_message"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -20,6 +22,7 @@
         android:layout_below="@+id/empty_feed_message"
         android:layout_centerHorizontal="true"
         android:text="@string/empty_feed_button"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="@color/common_signin_btn_light_text_default" />
     
 </RelativeLayout>

@@ -37,6 +37,7 @@
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
-        android:text="@string/login_button" />
+        android:text="@string/login_button"
+        android:textColor="@color/common_signin_btn_light_text_default" />
 
 </RelativeLayout>

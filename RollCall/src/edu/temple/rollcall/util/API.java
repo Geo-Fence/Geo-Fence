@@ -4,19 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.UnknownHostException;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
-import android.util.Log;
 
 public class API  {
 	static final String APIBaseURL = "http://cis-linux2.temple.edu/~tud04734/api/";

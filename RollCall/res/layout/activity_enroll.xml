@@ -34,6 +34,7 @@
         android:layout_below="@+id/enrollment_code_field"
         android:layout_centerHorizontal="true"
         android:text="@string/enroll_button"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="@color/common_signin_btn_light_text_default" />
 
 </RelativeLayout>

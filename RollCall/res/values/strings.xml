@@ -16,7 +16,7 @@
     <string name="login_button">Sign in</string>
     <string name="enroll_button">Enroll</string>
     <string name="enroll_title">Enter the enrollment code provided by your instructor.</string>
-    <string name="empty_feed_message">You have no upcoming sessions.</string>
+    <string name="empty_feed_message">You have no sessions in the upcoming week.</string>
     <string name="empty_feed_button">Enroll in a course</string>
 
 </resources>

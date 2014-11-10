@@ -3,6 +3,8 @@ package edu.temple.rollcall;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.temple.rollcall.util.RollCallUtil;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +32,12 @@ public class SessionDetailActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		RollCallUtil.checkPlayServices(this);
 	}
 	
 	@Override

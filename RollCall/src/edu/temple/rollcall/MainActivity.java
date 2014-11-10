@@ -7,6 +7,7 @@ import edu.temple.rollcall.R;
 import edu.temple.rollcall.cards.CardListFragment;
 import edu.temple.rollcall.util.API;
 import edu.temple.rollcall.util.EmptyFeedFragment;
+import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.UserAccount;
 
 import android.app.Activity;
@@ -23,10 +24,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	static final int LOGIN_REQUEST = 1;
+	static final int LOGIN_REQUEST = 1111;
 
 	ProgressBar refreshSpinner;
 	FrameLayout cardListContainer;
@@ -45,39 +47,45 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivityForResult(intent, LOGIN_REQUEST);
 		}
-		
+
 		if(getIntent().getAction().equals("refresh")) {
 			refreshFeed();
 		}
 	}
-	
+
 	@Override
-	  public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
-	    return true;
-	  } 
-	
+	protected void onResume() {
+		super.onResume();
+		RollCallUtil.checkPlayServices(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	} 
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
-	    switch (item.getItemId()) {
-	    case R.id.action_refresh:
-	    	refreshFeed();
-	    	break;
-	    case R.id.action_enroll:
-	    	intent = new Intent(MainActivity.this, EnrollActivity.class);
-	    	startActivity(intent);
-	    	break;
-	    case R.id.action_view_account:
-	    	intent = new Intent(MainActivity.this, AccountDetailActivity.class);
-	    	startActivity(intent);
-	    	break;
-	    case R.id.action_log_out:
-	    	logout();
-	    	break;
-	    }
-	    return super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+		case R.id.action_refresh:
+			refreshFeed();
+			break;
+		case R.id.action_enroll:
+			intent = new Intent(MainActivity.this, EnrollActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.action_view_account:
+			intent = new Intent(MainActivity.this, AccountDetailActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.action_log_out:
+			logout();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -86,8 +94,16 @@ public class MainActivity extends Activity {
 		case LOGIN_REQUEST:
 			if (resultCode == RESULT_OK) {
 				refreshFeed();
+				break;
 			}
+		case RollCall.REQUEST_CODE_RECOVER_PLAY_SERVICES:
+			if (resultCode == RESULT_CANCELED) {
+				Toast.makeText(this, "Google Play Services must be installed.", Toast.LENGTH_SHORT).show();
+				finish();
+			}
+			return;
 		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void refreshFeed() {
@@ -145,18 +161,18 @@ public class MainActivity extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
+
 			return true;
 		}
 	});
-	
+
 	private void logout() {
 		cardListContainer.removeAllViews();
-		
+
 		UserAccount.logout();
-		
+
 		Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 		startActivityForResult(intent, LOGIN_REQUEST);
 	}
-	
+
 }

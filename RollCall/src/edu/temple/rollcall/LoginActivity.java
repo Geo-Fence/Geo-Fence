@@ -3,6 +3,7 @@ package edu.temple.rollcall;
 import org.json.JSONObject;
 
 import edu.temple.rollcall.util.API;
+import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.UserAccount;
 import android.app.Activity;
 import android.os.Bundle;
@@ -33,6 +34,12 @@ public class LoginActivity extends Activity {
 		loginButton.setOnClickListener(loginButtonListener);
 		
 		getActionBar().setDisplayShowHomeEnabled(false);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		RollCallUtil.checkPlayServices(this);
 	}
 	
 	View.OnClickListener loginButtonListener = new View.OnClickListener() {
