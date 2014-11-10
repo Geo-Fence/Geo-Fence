@@ -28,17 +28,21 @@ public final class R {
         public static final int map_sample=0x7f020003;
     }
     public static final class id {
-        public static final int action_enroll=0x7f080011;
-        public static final int action_log_out=0x7f080013;
-        public static final int action_refresh=0x7f080010;
-        public static final int action_view_account=0x7f080012;
+        public static final int action_enroll=0x7f080015;
+        public static final int action_log_out=0x7f080017;
+        public static final int action_refresh=0x7f080014;
+        public static final int action_view_account=0x7f080016;
         public static final int card_course_name=0x7f08000c;
+        public static final int card_day_of_week=0x7f08000e;
+        public static final int card_end_time=0x7f080011;
         public static final int card_icon=0x7f08000b;
         public static final int card_layout_container=0x7f080009;
+        public static final int card_start_end_separator=0x7f080010;
+        public static final int card_start_time=0x7f08000f;
         public static final int card_teacher_name=0x7f08000d;
         public static final int email=0x7f080004;
-        public static final int empty_feed_button=0x7f08000f;
-        public static final int empty_feed_message=0x7f08000e;
+        public static final int empty_feed_button=0x7f080013;
+        public static final int empty_feed_message=0x7f080012;
         public static final int enroll_button=0x7f080003;
         public static final int enroll_title=0x7f080001;
         public static final int enrollment_code_field=0x7f080002;

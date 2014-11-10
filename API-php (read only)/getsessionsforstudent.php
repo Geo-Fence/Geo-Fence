@@ -20,6 +20,7 @@ $query = "SELECT s.id AS session_id," .
         " WHERE t.id = c.teacher_id" .
         " AND s.course_id = c.id" .
         " AND s.end_time >= UNIX_TIMESTAMP()" .
+        " AND s.start_time <= UNIX_TIMESTAMP() + 518400" .
         " ORDER BY s.start_time ASC";
 
 if($result = mysql_query($query)) {

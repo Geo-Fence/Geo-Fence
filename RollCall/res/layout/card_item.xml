@@ -35,6 +35,40 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.Small" />
             
+            <TextView android:id="@+id/card_day_of_week"
+                android:layout_below="@id/card_teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+            
+            <TextView android:id="@+id/card_start_time"
+                android:layout_toRightOf="@id/card_day_of_week"
+                android:layout_below="@id/card_teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+            
+            <TextView android:id="@+id/card_start_end_separator"
+                android:layout_toRightOf="@id/card_start_time"
+                android:layout_below="@id/card_teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:text=" - " />
+            
+            <TextView android:id="@+id/card_end_time"
+                android:layout_toRightOf="@id/card_start_end_separator"
+                android:layout_below="@id/card_teacher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+            
 
         </RelativeLayout>   
         

@@ -49,7 +49,7 @@ public class CardListFragment extends ListFragment {
 			try {
 				sessionInfo = sessionArray.getJSONObject(i);
 				
-				cardItems.add(new Card(getResources().getDrawable(R.drawable.map_sample), sessionInfo));
+				cardItems.add(new Card(sessionInfo));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
