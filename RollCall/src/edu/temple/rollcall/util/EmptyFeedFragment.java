@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+// Fragment to be displayed when a user logs in and has no upcoming sessions.
 public class EmptyFeedFragment extends Fragment {
 
 	@Override

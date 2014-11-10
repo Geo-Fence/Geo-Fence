@@ -32,10 +32,10 @@ public class Card {
     		
     		DateTime dateTime = new DateTime(Long.parseLong(sessionInfo.getString("start_time")) * 1000);
     		this.day_of_week = dateTime.toString("E");
-    		this.start_time = dateTime.toString("hh:mm a");
+    		this.start_time = dateTime.toString("h:mm a");
     		
     		dateTime = dateTime.withMillis(Long.parseLong(sessionInfo.getString("end_time")) * 1000);
-    		this.end_time = dateTime.toString("hh:mm a");
+    		this.end_time = dateTime.toString("h:mm a");
     		    		
     		this.start_time_millis = Long.parseLong(sessionInfo.getString("start_time")) * 1000;
     		this.end_time_millis = Long.parseLong(sessionInfo.getString("end_time")) * 1000;
@@ -46,6 +46,10 @@ public class Card {
     	}
     }
     
+    // Each card has a CardCountDownTimer which provides a message containing the time remaining
+    // until the session begins. Only provides output for sessions beginning in less than one day.
+    // The CardListAdapter references the public "output" string to display a countdown on the card
+    // in the list.
     public class CardCountDownTimer extends CountDownTimer {
 
     	public String output;
@@ -57,6 +61,7 @@ public class Card {
 
     	@Override
     	public void onTick(long millisUntilFinished) {
+    		// Generates a grammatically correct phrase...
     		Long millis = millisUntilFinished;
     		long days = TimeUnit.MILLISECONDS.toDays(millis);
     		millis -= TimeUnit.DAYS.toMillis(days);

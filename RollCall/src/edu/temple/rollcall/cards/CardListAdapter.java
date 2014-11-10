@@ -78,6 +78,10 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         ViewHolderUpdateTimer timer;
     }
     
+    // Each ViewHolder has a ViewHolderUpdateTimer to periodically update the card view.
+    // Current implementation uses the timer to display an updated count down message on
+    // sessions that begin in less than a day. Can also be used to display an updated 
+    // distance message, i.e. "Two miles away". Countdown expires when session is over.
     private class ViewHolderUpdateTimer extends CountDownTimer {
 
     	private TextView textView;
@@ -99,6 +103,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
     	@Override
     	public void onFinish() {
+    		// When session is over, remove the card.
     		adapter.removeTopCard();
     	}
     }

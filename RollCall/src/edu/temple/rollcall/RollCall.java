@@ -14,8 +14,6 @@ import android.graphics.Bitmap;
 
 public class RollCall extends Application {
 	
-	public static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 2222;
-	
 	ImageLoader imageLoader;
 	DisplayImageOptions displayOptions;
 	

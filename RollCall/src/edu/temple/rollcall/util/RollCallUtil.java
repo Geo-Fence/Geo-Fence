@@ -10,11 +10,13 @@ import edu.temple.rollcall.RollCall;
 
 public class RollCallUtil {
 	
+	public static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 2222;
+	
 	public static boolean checkPlayServices(Activity activity) {
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
 		if (status != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
-				GooglePlayServicesUtil.getErrorDialog(status, activity, RollCall.REQUEST_CODE_RECOVER_PLAY_SERVICES).show();
+				GooglePlayServicesUtil.getErrorDialog(status, activity, REQUEST_CODE_RECOVER_PLAY_SERVICES).show();
 			} else {
 				Toast.makeText(activity, "This device is not supported.", Toast.LENGTH_LONG).show();
 				activity.finish();

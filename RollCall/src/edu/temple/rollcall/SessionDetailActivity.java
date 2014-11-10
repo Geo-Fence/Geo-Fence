@@ -43,7 +43,7 @@ public class SessionDetailActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	    case android.R.id.home:
+	    case android.R.id.home: // Back button in Action Bar.
 	        finish();
 	        break;
 	    }

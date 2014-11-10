@@ -43,7 +43,6 @@ public class LoginActivity extends Activity {
 	}
 	
 	View.OnClickListener loginButtonListener = new View.OnClickListener() {
-
 		@Override
 		public void onClick(View v) {
 			Thread t = new Thread() {
@@ -52,15 +51,15 @@ public class LoginActivity extends Activity {
 					JSONObject result = API.login(LoginActivity.this, email.getText().toString(), password.getText().toString());
 					Message msg = Message.obtain();
 					msg.obj = result;
-					loginAttemptHandler.sendMessage(msg);
+					loginAttemptHandler.sendMessage(msg); // Send API response back to LoginActivity.
 				}
 			};
 			t.start();
 		}
 	};
 	
-	Handler loginAttemptHandler = new Handler(new Handler.Callback() {
-		
+	// Receives API response from thread in loginButtonListener.
+	Handler loginAttemptHandler = new Handler(new Handler.Callback() {	
 		@Override
 		public boolean handleMessage(Message msg) {
 			JSONObject response = (JSONObject) msg.obj;
@@ -71,12 +70,12 @@ public class LoginActivity extends Activity {
 				status = response.getString("status");
 				switch(status) {
 				case "ok":
-					UserAccount.update(response.getJSONObject("account"));
+					UserAccount.update(response.getJSONObject("account")); // Update UserAccount credentials.
 					setResult(RESULT_OK, getIntent());
-					finish();
+					finish(); // Return to MainActivity.
 					break;
 				case "error":
-					if(response.getInt("errno") == 0) {
+					if(response.getInt("errno") == 0) { // If there was no MySQL error, then the email/password were unsuccessful.
 						toast = Toast.makeText(LoginActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT);
 						toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 						toast.show();
@@ -84,10 +83,6 @@ public class LoginActivity extends Activity {
 						Log.d("LoginActivity", "MySQL error " + response.getString("errno").toString());
 					}
 					break;
-				case "network-error":
-					toast = Toast.makeText(LoginActivity.this, "Network error. Please check your connection and try again.", Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-					toast.show();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

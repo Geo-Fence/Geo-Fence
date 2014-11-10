@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
+// Static class contains user credentials. No instance required, all variables are static.
 public class UserAccount {
 	
 	public static String studentId = null;
@@ -12,17 +13,7 @@ public class UserAccount {
 	public static String firstName;
 	public static String lastName;
 	
-	public static boolean login(Context context, String email, String password) {
-		JSONObject result = API.login(context, email, password);
-		try {
-			studentId = result.getString("id");
-			return true;
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
+	// Update credentials with values from a JSON object.
 	public static void update(JSONObject account) {
 		try {
 			studentId = account.getString("id");
@@ -34,6 +25,7 @@ public class UserAccount {
 		}
 	}
 	
+	// Clear user credentials.
 	public static void logout() {
 		studentId = null;
 		email = null;

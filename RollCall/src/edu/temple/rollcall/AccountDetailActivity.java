@@ -31,7 +31,7 @@ public class AccountDetailActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	    case android.R.id.home:
+	    case android.R.id.home: // Action bar back button.
 	    	finish();
 	        break;
 	    }
