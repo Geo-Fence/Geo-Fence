@@ -61,21 +61,27 @@ public class Card {
 
     	@Override
     	public void onTick(long millisUntilFinished) {
-    		// Generates a grammatically correct phrase...
     		Long millis = millisUntilFinished;
     		long days = TimeUnit.MILLISECONDS.toDays(millis);
     		millis -= TimeUnit.DAYS.toMillis(days);
     		long hours = TimeUnit.MILLISECONDS.toHours(millis);
     		millis -= TimeUnit.HOURS.toMillis(hours);
     		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-    		if(days == 0) {
-    			String message = "Begins in";
-    			if(hours > 1) message += " " + hours + " hours";
-    			else if(hours == 1) message += " " + hours + " hour";
-    			if(minutes > 1) message += ", " + minutes + " minutes.";
-    			else if(minutes == 1) message += ", " + minutes + " minute.";
-    			else if(minutes == 0) message += ".";
-    			if(hours == 0 && minutes == 0) message += " less than a minute.";
+    	
+    		// Generates a grammatically correct phrase...
+    		String message = "Begins in ";
+    		if(days < 1) {
+    			if(hours > 0) {
+    				message += hours;
+    				message += (hours == 1) ? " hour" : " hours";
+    				message += (minutes > 0) ? ", " : ".";
+    			} else if(minutes == 0) {
+    				message += "less than a minute.";
+    			}
+    			if(minutes > 0) {
+    				message += minutes;
+    				message += (minutes == 1) ? " minute." : " minutes.";
+    			}
     			this.output = message;
     		} else {
     			this.output = "";
