@@ -142,4 +142,14 @@ public class API  {
 			return null;
 		}
 	}
+	
+	public static JSONObject createAccount(Context context, String firstName, String lastName, String email, String password) {
+		try {
+			String response = makeAPICall(context, "createuser.php?first_name=" + firstName + "&last_name=" + lastName + "&email=" + email + "&password=" + password);
+			return new JSONObject(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

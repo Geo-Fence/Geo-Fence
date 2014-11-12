@@ -7,10 +7,13 @@
     <string name="title_activity_enroll">Back</string>
     <string name="title_activity_session_detail">Back</string>
     <string name="title_activity_account_detail">Back</string>
+    <string name="title_activity_create_account">Back</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_enroll">Enroll</string>
     <string name="action_view_account">View account</string>
     <string name="action_log_out">Sign out</string>
+    <string name="first_name_hint">first name</string>
+    <string name="last_name_hint">last name</string>
     <string name="email_hint">email</string>
     <string name="password_hint">password</string>
     <string name="login_button">Sign in</string>
@@ -18,5 +21,7 @@
     <string name="enroll_title">Enter the enrollment code provided by your instructor.</string>
     <string name="empty_feed_message">You have no sessions in the upcoming week.</string>
     <string name="empty_feed_button">Enroll in a course</string>
+    <string name="create_account_button">Create account</string>
+    <string name="action_create_account">New account</string>
 
 </resources>
