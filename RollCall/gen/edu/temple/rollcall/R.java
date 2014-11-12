@@ -370,93 +370,97 @@ containing a value of this type.
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f080000;
-        public static final int activity_vertical_margin=0x7f080001;
+        public static final int activity_horizontal_margin=0x7f090000;
+        public static final int activity_vertical_margin=0x7f090001;
     }
     public static final class drawable {
-        public static final int common_full_open_on_phone=0x7f020000;
-        public static final int common_ic_googleplayservices=0x7f020001;
-        public static final int common_signin_btn_icon_dark=0x7f020002;
-        public static final int common_signin_btn_icon_disabled_dark=0x7f020003;
-        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020004;
-        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020005;
-        public static final int common_signin_btn_icon_disabled_light=0x7f020006;
-        public static final int common_signin_btn_icon_focus_dark=0x7f020007;
-        public static final int common_signin_btn_icon_focus_light=0x7f020008;
-        public static final int common_signin_btn_icon_light=0x7f020009;
-        public static final int common_signin_btn_icon_normal_dark=0x7f02000a;
-        public static final int common_signin_btn_icon_normal_light=0x7f02000b;
-        public static final int common_signin_btn_icon_pressed_dark=0x7f02000c;
-        public static final int common_signin_btn_icon_pressed_light=0x7f02000d;
-        public static final int common_signin_btn_text_dark=0x7f02000e;
-        public static final int common_signin_btn_text_disabled_dark=0x7f02000f;
-        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020010;
-        public static final int common_signin_btn_text_disabled_focus_light=0x7f020011;
-        public static final int common_signin_btn_text_disabled_light=0x7f020012;
-        public static final int common_signin_btn_text_focus_dark=0x7f020013;
-        public static final int common_signin_btn_text_focus_light=0x7f020014;
-        public static final int common_signin_btn_text_light=0x7f020015;
-        public static final int common_signin_btn_text_normal_dark=0x7f020016;
-        public static final int common_signin_btn_text_normal_light=0x7f020017;
-        public static final int common_signin_btn_text_pressed_dark=0x7f020018;
-        public static final int common_signin_btn_text_pressed_light=0x7f020019;
-        public static final int frame=0x7f02001a;
-        public static final int ic_action_refresh=0x7f02001b;
-        public static final int ic_launcher=0x7f02001c;
-        public static final int ic_plusone_medium_off_client=0x7f02001d;
-        public static final int ic_plusone_small_off_client=0x7f02001e;
-        public static final int ic_plusone_standard_off_client=0x7f02001f;
-        public static final int ic_plusone_tall_off_client=0x7f020020;
-        public static final int map_sample=0x7f020021;
-        public static final int map_thumb_placeholder=0x7f020022;
-        public static final int powered_by_google_dark=0x7f020023;
-        public static final int powered_by_google_light=0x7f020024;
+        public static final int check_in_button=0x7f020000;
+        public static final int common_full_open_on_phone=0x7f020001;
+        public static final int common_ic_googleplayservices=0x7f020002;
+        public static final int common_signin_btn_icon_dark=0x7f020003;
+        public static final int common_signin_btn_icon_disabled_dark=0x7f020004;
+        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020005;
+        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020006;
+        public static final int common_signin_btn_icon_disabled_light=0x7f020007;
+        public static final int common_signin_btn_icon_focus_dark=0x7f020008;
+        public static final int common_signin_btn_icon_focus_light=0x7f020009;
+        public static final int common_signin_btn_icon_light=0x7f02000a;
+        public static final int common_signin_btn_icon_normal_dark=0x7f02000b;
+        public static final int common_signin_btn_icon_normal_light=0x7f02000c;
+        public static final int common_signin_btn_icon_pressed_dark=0x7f02000d;
+        public static final int common_signin_btn_icon_pressed_light=0x7f02000e;
+        public static final int common_signin_btn_text_dark=0x7f02000f;
+        public static final int common_signin_btn_text_disabled_dark=0x7f020010;
+        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020011;
+        public static final int common_signin_btn_text_disabled_focus_light=0x7f020012;
+        public static final int common_signin_btn_text_disabled_light=0x7f020013;
+        public static final int common_signin_btn_text_focus_dark=0x7f020014;
+        public static final int common_signin_btn_text_focus_light=0x7f020015;
+        public static final int common_signin_btn_text_light=0x7f020016;
+        public static final int common_signin_btn_text_normal_dark=0x7f020017;
+        public static final int common_signin_btn_text_normal_light=0x7f020018;
+        public static final int common_signin_btn_text_pressed_dark=0x7f020019;
+        public static final int common_signin_btn_text_pressed_light=0x7f02001a;
+        public static final int custom_border=0x7f02001b;
+        public static final int frame=0x7f02001c;
+        public static final int ic_action_refresh=0x7f02001d;
+        public static final int ic_launcher=0x7f02001e;
+        public static final int ic_plusone_medium_off_client=0x7f02001f;
+        public static final int ic_plusone_small_off_client=0x7f020020;
+        public static final int ic_plusone_standard_off_client=0x7f020021;
+        public static final int ic_plusone_tall_off_client=0x7f020022;
+        public static final int map_sample=0x7f020023;
+        public static final int map_thumb_placeholder=0x7f020024;
+        public static final int powered_by_google_dark=0x7f020025;
+        public static final int powered_by_google_light=0x7f020026;
     }
     public static final class id {
-        public static final int action_enroll=0x7f0a0026;
-        public static final int action_log_out=0x7f0a0028;
-        public static final int action_refresh=0x7f0a0025;
-        public static final int action_view_account=0x7f0a0027;
-        public static final int book_now=0x7f0a000e;
-        public static final int buyButton=0x7f0a000a;
-        public static final int buy_now=0x7f0a000f;
-        public static final int buy_with_google=0x7f0a0010;
-        public static final int card_countdown=0x7f0a0022;
-        public static final int card_course_name=0x7f0a001f;
-        public static final int card_icon=0x7f0a001e;
-        public static final int card_layout_container=0x7f0a001c;
-        public static final int card_session_time=0x7f0a0021;
-        public static final int card_teacher_name=0x7f0a0020;
-        public static final int classic=0x7f0a0011;
-        public static final int email=0x7f0a0018;
-        public static final int empty_feed_button=0x7f0a0024;
-        public static final int empty_feed_message=0x7f0a0023;
-        public static final int enroll_button=0x7f0a0017;
-        public static final int enroll_title=0x7f0a0015;
-        public static final int enrollment_code_field=0x7f0a0016;
-        public static final int grayscale=0x7f0a0012;
-        public static final int holo_dark=0x7f0a0005;
-        public static final int holo_light=0x7f0a0006;
-        public static final int hybrid=0x7f0a0000;
-        public static final int login=0x7f0a001a;
-        public static final int match_parent=0x7f0a000c;
-        public static final int monochrome=0x7f0a0013;
-        public static final int name=0x7f0a0014;
-        public static final int none=0x7f0a0001;
-        public static final int normal=0x7f0a0002;
-        public static final int password=0x7f0a0019;
-        public static final int production=0x7f0a0007;
-        public static final int refresh_spinner=0x7f0a001b;
-        public static final int sandbox=0x7f0a0008;
-        public static final int satellite=0x7f0a0003;
-        public static final int selectionDetails=0x7f0a000b;
-        public static final int session_detail_course_name=0x7f0a001d;
-        public static final int strict_sandbox=0x7f0a0009;
-        public static final int terrain=0x7f0a0004;
-        public static final int wrap_content=0x7f0a000d;
+        public static final int action_enroll=0x7f070028;
+        public static final int action_log_out=0x7f07002a;
+        public static final int action_refresh=0x7f070027;
+        public static final int action_view_account=0x7f070029;
+        public static final int book_now=0x7f070010;
+        public static final int buyButton=0x7f07000a;
+        public static final int buy_now=0x7f07000f;
+        public static final int buy_with_google=0x7f07000e;
+        public static final int card_countdown=0x7f070024;
+        public static final int card_course_name=0x7f070021;
+        public static final int card_icon=0x7f070020;
+        public static final int card_layout_container=0x7f07001c;
+        public static final int card_session_time=0x7f070023;
+        public static final int card_teacher_name=0x7f070022;
+        public static final int classic=0x7f070011;
+        public static final int email=0x7f070018;
+        public static final int empty_feed_button=0x7f070026;
+        public static final int empty_feed_message=0x7f070025;
+        public static final int enroll_button=0x7f070017;
+        public static final int enroll_title=0x7f070015;
+        public static final int enrollment_code_field=0x7f070016;
+        public static final int grayscale=0x7f070012;
+        public static final int holo_dark=0x7f070005;
+        public static final int holo_light=0x7f070006;
+        public static final int hybrid=0x7f070004;
+        public static final int login=0x7f07001a;
+        public static final int map=0x7f07001d;
+        public static final int match_parent=0x7f07000c;
+        public static final int monochrome=0x7f070013;
+        public static final int name=0x7f070014;
+        public static final int none=0x7f070000;
+        public static final int normal=0x7f070001;
+        public static final int password=0x7f070019;
+        public static final int production=0x7f070007;
+        public static final int refresh_spinner=0x7f07001b;
+        public static final int sandbox=0x7f070008;
+        public static final int satellite=0x7f070002;
+        public static final int selectionDetails=0x7f07000b;
+        public static final int session_detail_check_in_button=0x7f07001e;
+        public static final int session_detail_course_name=0x7f07001f;
+        public static final int strict_sandbox=0x7f070009;
+        public static final int terrain=0x7f070003;
+        public static final int wrap_content=0x7f07000d;
     }
     public static final class integer {
-        public static final int google_play_services_version=0x7f070000;
+        public static final int google_play_services_version=0x7f080000;
     }
     public static final class layout {
         public static final int activity_account_detail=0x7f030000;
@@ -468,7 +472,7 @@ containing a value of this type.
         public static final int empty_feed=0x7f030006;
     }
     public static final class menu {
-        public static final int menu=0x7f090000;
+        public static final int menu=0x7f0a0000;
     }
     public static final class string {
         public static final int accept=0x7f050002;
@@ -609,19 +613,30 @@ containing a value of this type.
             backward-compatibility can go here.
         
 
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
- API 11 theme customizations can go here. 
 
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
- API 14 theme customizations can go here. 
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
         public static final int AppBaseTheme=0x7f040005;
         /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f040006;
@@ -635,6 +650,7 @@ containing a value of this type.
     
          */
         public static final int WalletFragmentDefaultStyle=0x7f040004;
+        public static final int button_text=0x7f040007;
     }
     public static final class styleable {
         /** Attributes that can be used with a AdsAttrs.
