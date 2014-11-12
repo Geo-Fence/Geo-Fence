@@ -7,10 +7,10 @@
 // Additional JSON elements: account object on success, errno on error
 // Note: errno 0 means login was unsuccessful
 
-include "util.php";
+ include "util.php";
 
-$email = mysql_real_escape_string($_GET["email"]);
-$password = md5(mysql_real_escape_string($_GET["password"]));
+ $email = mysql_real_escape_string(urldecode($_GET["email"]));
+ $password = md5(urldecode($_GET["password"]));
 
 $query = "SELECT id, first_name, last_name, email, password".
 	" FROM students".

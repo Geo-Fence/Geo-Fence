@@ -10,7 +10,7 @@
 include "util.php";
 
 $student_id = mysql_real_escape_string($_GET["student_id"]);
-$enrollment_code = mysql_real_escape_string($_GET["enrollment_code"]);
+$enrollment_code = mysql_real_escape_string(urldecode($_GET["enrollment_code"]));
 
 $query = "SELECT id FROM courses c".
 	" WHERE c.enrollment_code='{$enrollment_code}'";
