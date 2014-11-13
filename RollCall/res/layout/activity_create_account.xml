@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}"
+    android:padding="10dp" >
+
+    <EditText
+        android:id="@+id/create_account_first_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:layout_marginBottom="30dp"
+        android:inputType="textPersonName"
+        android:hint="@string/first_name_hint" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/create_account_last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_account_first_name"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:layout_marginBottom="30dp"
+        android:inputType="textPersonName"
+        android:hint="@string/last_name_hint" />
+
+    <EditText
+        android:id="@+id/create_account_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_account_last_name"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:layout_marginBottom="30dp"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_hint" />
+
+    <EditText
+        android:id="@+id/create_account_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_account_email"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:layout_marginBottom="30dp"
+        android:inputType="textPassword"
+        android:hint="@string/password_hint" />
+
+    <Button
+        android:id="@+id/create_account_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_account_password"
+        android:layout_centerHorizontal="true"
+        android:text="@string/create_account_button"
+        android:textColor="@color/common_signin_btn_light_text_default" />
+
+</RelativeLayout>

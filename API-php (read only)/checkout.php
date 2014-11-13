@@ -9,14 +9,14 @@
 include "util.php";
 
 $query = "UPDATE attendance" .
-        " SET time_out=UNIX_TIMESTAMP()" .
-        " WHERE student_id=" . $_GET["student_id"] .
-        " AND session_id=" . $_GET["session_id"];
+	" SET time_out=UNIX_TIMESTAMP()" .
+	" WHERE student_id=" . $_GET["student_id"] .
+	" AND session_id=" . $_GET["session_id"];
 
 if(mysql_query($query)) {
-        echo json_encode(array("status" => "ok"));
+	echo json_encode(array("status" => "ok"));
 } else {
-        echo json_encode(array("status" => "error", "errno" => mysql_errno() ));
+	echo json_encode(array("status" => "error", "errno" => mysql_errno() ));
 }
 
 ?>

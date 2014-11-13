@@ -31,7 +31,7 @@ public class Card {
     		this.teacher_name = sessionInfo.getString("teacher_first_name") + " " + sessionInfo.getString("teacher_last_name");
     		
     		DateTime dateTime = new DateTime(Long.parseLong(sessionInfo.getString("start_time")) * 1000);
-    		this.day_of_week = dateTime.toString("E");
+    		this.day_of_week = dateTime.toString("EEEE");
     		this.start_time = dateTime.toString("h:mm a");
     		
     		dateTime = dateTime.withMillis(Long.parseLong(sessionInfo.getString("end_time")) * 1000);

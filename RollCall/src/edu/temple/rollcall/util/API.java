@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
@@ -115,6 +116,8 @@ public class API  {
 	 */
 	public static JSONObject login(Context context, String email, String password) {
 		try {
+			email = URLEncoder.encode(email, "UTF-8");
+			password = URLEncoder.encode(password, "UTF-8");
 			String response = makeAPICall(context, "login.php?email=" + email + "&password=" + password);
 			return new JSONObject(response);
 		} catch (Exception e) {
@@ -135,7 +138,31 @@ public class API  {
 	 */
 	public static JSONObject enroll(Context context, String studentId, String enrollmentCode) {
 		try {
+			enrollmentCode = URLEncoder.encode(enrollmentCode, "UTF-8");
 			String response = makeAPICall(context, "enroll.php?student_id=" + studentId + "&enrollment_code=" + enrollmentCode);
+			return new JSONObject(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Create a new user.
+	 * @param context
+	 * @param enrollmentCode
+	 * @return On success, returns a JSON object containing "status":"ok".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * 		   Errno 1062 means an account already exists for the provided email.
+	 * See login.php for more details.
+	 */
+	public static JSONObject createAccount(Context context, String firstName, String lastName, String email, String password) {
+		try {
+			firstName = URLEncoder.encode(firstName, "UTF-8");
+			lastName = URLEncoder.encode(lastName, "UTF-8");
+			email = URLEncoder.encode(email, "UTF-8");
+			password = URLEncoder.encode(password, "UTF-8");
+			String response = makeAPICall(context, "createuser.php?first_name=" + firstName + "&last_name=" + lastName + "&email=" + email + "&password=" + password);
 			return new JSONObject(response);
 		} catch (Exception e) {
 			e.printStackTrace();
