@@ -1,10 +1,12 @@
-package edu.temple.rollcall.cards;
+package edu.temple.rollcall.util.sessionlist;
 
 import java.util.Date;
 import java.util.List;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import edu.temple.rollcall.R;
+import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.api.GoogleMapsImageAPI;
 
 import android.content.Context;
 import android.os.CountDownTimer;
@@ -15,9 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CardListAdapter extends ArrayAdapter<Card> {
+public class SessionListAdapter extends ArrayAdapter<Session> {
 	 
-    public CardListAdapter(Context context, List<Card> items) {
+    public SessionListAdapter(Context context, List<Session> items) {
         super(context, R.layout.card_item, items);
     }
  
@@ -45,20 +47,20 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         }
         
         // update the item view
-        Card card = getItem(position);
-        ImageLoader.getInstance().displayImage(card.thumbURL, viewHolder.icon);
-        viewHolder.course_name.setText(card.course_name);
-        viewHolder.teacher_name.setText(card.teacher_name);
-        String sessionTime = card.day_of_week + ", " + card.start_time + " - " + card.end_time;
+        Session session = getItem(position);
+        ImageLoader.getInstance().displayImage(GoogleMapsImageAPI.getURLString(200, 200, 17, session.latitude, session.longitude), viewHolder.icon);
+        viewHolder.course_name.setText(session.courseName);
+        viewHolder.teacher_name.setText(session.teacherName);
+        String sessionTime = session.dayOfWeek + ", " + session.startTimeString + " - " + session.endTimeString;
         viewHolder.session_time.setText(sessionTime);
-        viewHolder.countdown.setText(card.timer.output);
+        viewHolder.countdown.setText(session.timer.output);
         if(viewHolder.timer != null) viewHolder.timer.cancel();
-        viewHolder.timer = new ViewHolderUpdateTimer(card.end_time_millis - new Date().getTime(), 1000, viewHolder.countdown, card, this);
+        viewHolder.timer = new ViewHolderUpdateTimer(session.endTimeMillis - new Date().getTime(), 1000, viewHolder.countdown, session, this);
 
         return convertView;
     }
     
-    public void removeTopCard() {
+    public void removeTopSession() {
     	this.remove(getItem(0));
     }
     
@@ -85,26 +87,26 @@ public class CardListAdapter extends ArrayAdapter<Card> {
     private class ViewHolderUpdateTimer extends CountDownTimer {
 
     	private TextView textView;
-    	private Card card;
-    	private CardListAdapter adapter;
+    	private Session session;
+    	private SessionListAdapter adapter;
 
-    	public ViewHolderUpdateTimer(long millisInFuture, long countDownInterval, TextView textView, Card card, CardListAdapter adapter) {
+    	public ViewHolderUpdateTimer(long millisInFuture, long countDownInterval, TextView textView, Session session, SessionListAdapter adapter) {
     		super(millisInFuture, countDownInterval);
     		this.textView = textView;
-    		this.card = card;
+    		this.session = session;
     		this.adapter = adapter;
     		this.start();
     	}
 
     	@Override
     	public void onTick(long millisUntilFinished) {
-    		this.textView.setText(card.timer.output);
+    		this.textView.setText(session.timer.output);
     	}
 
     	@Override
     	public void onFinish() {
     		// When session is over, remove the card.
-    		adapter.removeTopCard();
+    		adapter.removeTopSession();
     	}
     }
 }

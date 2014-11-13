@@ -1,14 +1,18 @@
 package edu.temple.rollcall;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.temple.rollcall.R;
-import edu.temple.rollcall.cards.CardListFragment;
-import edu.temple.rollcall.util.API;
-import edu.temple.rollcall.util.EmptyFeedFragment;
 import edu.temple.rollcall.util.RollCallUtil;
+import edu.temple.rollcall.util.Session;
 import edu.temple.rollcall.util.UserAccount;
+import edu.temple.rollcall.util.api.API;
+import edu.temple.rollcall.util.sessionlist.EmptyFeedFragment;
+import edu.temple.rollcall.util.sessionlist.SessionListFragment;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -31,6 +35,8 @@ public class MainActivity extends Activity {
 
 	ProgressBar refreshSpinner;
 	FrameLayout cardListContainer;
+	
+	ArrayList<Session> sessionList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,9 @@ public class MainActivity extends Activity {
 
 		refreshSpinner = (ProgressBar) findViewById(R.id.refresh_spinner);
 		cardListContainer = (FrameLayout) findViewById(R.id.card_layout_container);
-
+		
+		sessionList = new ArrayList<Session>();
+		
 		// If the user hasn't signed in, start the login activity.
 		if(UserAccount.studentId == null) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -144,14 +152,21 @@ public class MainActivity extends Activity {
 						ft.add(cardListContainer.getId() , new EmptyFeedFragment()); // Add an EmptyFeedFragment to the container.
 						ft.commit();
 					} else {
-						CardListFragment cardListFragment = new CardListFragment();
+						SessionListFragment cardListFragment = new SessionListFragment();
 						// Send the JSON array of sessions to the CardListFragment.
 						Bundle args = new Bundle();
 						args.putString("sessionArray", response.getJSONArray("sessionArray").toString());
 						cardListFragment.setArguments(args);
+						
+						// Add the cardListFragment to the container view.
 						FragmentTransaction ft = getFragmentManager().beginTransaction();
-						ft.add(cardListContainer.getId(), cardListFragment); // Add the cardListFragment to the container.
+						ft.add(cardListContainer.getId(), cardListFragment);
 						ft.commit();
+						
+						JSONArray sessionArray = new JSONArray(response.getJSONArray("sessionArray").toString());
+						for(int i = 0 ; i < sessionArray.length() ; i++) {
+							sessionList.add(new Session(sessionArray.getJSONObject(i)));
+						}
 					}
 					break;
 				case "error": // MySQL error in API call.

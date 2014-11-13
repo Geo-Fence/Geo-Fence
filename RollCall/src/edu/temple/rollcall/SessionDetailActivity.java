@@ -1,20 +1,17 @@
 package edu.temple.rollcall;
 
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import edu.temple.rollcall.cards.Card.CardCountDownTimer;
 import edu.temple.rollcall.util.RollCallUtil;
 
 import android.content.Intent;

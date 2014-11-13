@@ -2,9 +2,9 @@ package edu.temple.rollcall;
 
 import org.json.JSONObject;
 
-import edu.temple.rollcall.util.API;
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.UserAccount;
+import edu.temple.rollcall.util.api.API;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-	
+
 	private static final int CREATE_ACCOUNT_REQUEST = 2222;
 
 	EditText email;
@@ -36,25 +36,25 @@ public class LoginActivity extends Activity {
 		email = (EditText) findViewById(R.id.email);
 		password = (EditText) findViewById(R.id.password);
 		loginButton = (Button) findViewById(R.id.login);
-		
+
 		loginButton.setOnClickListener(loginButtonListener);
-		
+
 		getActionBar().setDisplayShowHomeEnabled(false);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		RollCallUtil.checkPlayServices(this);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_login_action_bar, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -65,15 +65,17 @@ public class LoginActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		email.setText(data.getStringExtra("email"));
-		password.setText(data.getStringExtra("password"));
-		loginButton.performClick();
+		if(resultCode == CreateAccountActivity.NEW_ACCOUNT_LOGIN_REQUEST) {
+			email.setText(data.getStringExtra("email"));
+			password.setText(data.getStringExtra("password"));
+			loginButton.performClick();
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	View.OnClickListener loginButtonListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -89,7 +91,7 @@ public class LoginActivity extends Activity {
 			t.start();
 		}
 	};
-	
+
 	// Receives API response from thread in loginButtonListener.
 	Handler loginAttemptHandler = new Handler(new Handler.Callback() {	
 		@Override
@@ -97,7 +99,7 @@ public class LoginActivity extends Activity {
 			JSONObject response = (JSONObject) msg.obj;
 			String status = "";
 			Toast toast;
-			
+
 			try{
 				status = response.getString("status");
 				switch(status) {

@@ -370,8 +370,8 @@ containing a value of this type.
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f090000;
-        public static final int activity_vertical_margin=0x7f090001;
+        public static final int activity_horizontal_margin=0x7f080000;
+        public static final int activity_vertical_margin=0x7f080001;
     }
     public static final class drawable {
         public static final int background_with_shadow=0x7f020000;
@@ -418,61 +418,61 @@ containing a value of this type.
         public static final int powered_by_google_light=0x7f020029;
     }
     public static final class id {
-        public static final int action_create_account=0x7f07002f;
-        public static final int action_enroll=0x7f070031;
-        public static final int action_log_out=0x7f070033;
-        public static final int action_refresh=0x7f070030;
-        public static final int action_view_account=0x7f070032;
-        public static final int book_now=0x7f070010;
-        public static final int buyButton=0x7f07000a;
-        public static final int buy_now=0x7f07000f;
-        public static final int buy_with_google=0x7f07000e;
-        public static final int card_countdown=0x7f07002c;
-        public static final int card_course_name=0x7f070029;
-        public static final int card_icon=0x7f070028;
-        public static final int card_layout_container=0x7f070021;
-        public static final int card_session_time=0x7f07002b;
-        public static final int card_teacher_name=0x7f07002a;
-        public static final int classic=0x7f070011;
-        public static final int create_account_button=0x7f070019;
-        public static final int create_account_email=0x7f070017;
-        public static final int create_account_first_name=0x7f070015;
-        public static final int create_account_last_name=0x7f070016;
-        public static final int create_account_password=0x7f070018;
-        public static final int email=0x7f07001d;
-        public static final int empty_feed_button=0x7f07002e;
-        public static final int empty_feed_message=0x7f07002d;
-        public static final int enroll_button=0x7f07001c;
-        public static final int enroll_title=0x7f07001a;
-        public static final int enrollment_code_field=0x7f07001b;
-        public static final int grayscale=0x7f070012;
-        public static final int holo_dark=0x7f070005;
-        public static final int holo_light=0x7f070006;
-        public static final int hybrid=0x7f070004;
-        public static final int login=0x7f07001f;
-        public static final int map=0x7f070023;
-        public static final int map_layout=0x7f070022;
-        public static final int match_parent=0x7f07000c;
-        public static final int monochrome=0x7f070013;
-        public static final int name=0x7f070014;
-        public static final int none=0x7f070000;
-        public static final int normal=0x7f070001;
-        public static final int password=0x7f07001e;
-        public static final int production=0x7f070007;
-        public static final int refresh_spinner=0x7f070020;
-        public static final int sandbox=0x7f070008;
-        public static final int satellite=0x7f070002;
-        public static final int selectionDetails=0x7f07000b;
-        public static final int session_detail_check_in_button=0x7f070024;
-        public static final int session_detail_course_name=0x7f070025;
-        public static final int session_detail_session_time=0x7f070027;
-        public static final int session_detail_teacher_name=0x7f070026;
-        public static final int strict_sandbox=0x7f070009;
-        public static final int terrain=0x7f070003;
-        public static final int wrap_content=0x7f07000d;
+        public static final int action_create_account=0x7f0a002f;
+        public static final int action_enroll=0x7f0a0031;
+        public static final int action_log_out=0x7f0a0033;
+        public static final int action_refresh=0x7f0a0030;
+        public static final int action_view_account=0x7f0a0032;
+        public static final int book_now=0x7f0a000e;
+        public static final int buyButton=0x7f0a000a;
+        public static final int buy_now=0x7f0a000f;
+        public static final int buy_with_google=0x7f0a0010;
+        public static final int card_countdown=0x7f0a002c;
+        public static final int card_course_name=0x7f0a0029;
+        public static final int card_icon=0x7f0a0028;
+        public static final int card_layout_container=0x7f0a0021;
+        public static final int card_session_time=0x7f0a002b;
+        public static final int card_teacher_name=0x7f0a002a;
+        public static final int classic=0x7f0a0011;
+        public static final int create_account_button=0x7f0a0019;
+        public static final int create_account_email=0x7f0a0017;
+        public static final int create_account_first_name=0x7f0a0015;
+        public static final int create_account_last_name=0x7f0a0016;
+        public static final int create_account_password=0x7f0a0018;
+        public static final int email=0x7f0a001d;
+        public static final int empty_feed_button=0x7f0a002e;
+        public static final int empty_feed_message=0x7f0a002d;
+        public static final int enroll_button=0x7f0a001c;
+        public static final int enroll_title=0x7f0a001a;
+        public static final int enrollment_code_field=0x7f0a001b;
+        public static final int grayscale=0x7f0a0012;
+        public static final int holo_dark=0x7f0a0005;
+        public static final int holo_light=0x7f0a0006;
+        public static final int hybrid=0x7f0a0000;
+        public static final int login=0x7f0a001f;
+        public static final int map=0x7f0a0023;
+        public static final int map_layout=0x7f0a0022;
+        public static final int match_parent=0x7f0a000c;
+        public static final int monochrome=0x7f0a0013;
+        public static final int name=0x7f0a0014;
+        public static final int none=0x7f0a0001;
+        public static final int normal=0x7f0a0002;
+        public static final int password=0x7f0a001e;
+        public static final int production=0x7f0a0007;
+        public static final int refresh_spinner=0x7f0a0020;
+        public static final int sandbox=0x7f0a0008;
+        public static final int satellite=0x7f0a0003;
+        public static final int selectionDetails=0x7f0a000b;
+        public static final int session_detail_check_in_button=0x7f0a0024;
+        public static final int session_detail_course_name=0x7f0a0025;
+        public static final int session_detail_session_time=0x7f0a0027;
+        public static final int session_detail_teacher_name=0x7f0a0026;
+        public static final int strict_sandbox=0x7f0a0009;
+        public static final int terrain=0x7f0a0004;
+        public static final int wrap_content=0x7f0a000d;
     }
     public static final class integer {
-        public static final int google_play_services_version=0x7f080000;
+        public static final int google_play_services_version=0x7f070000;
     }
     public static final class layout {
         public static final int activity_account_detail=0x7f030000;
@@ -485,8 +485,8 @@ containing a value of this type.
         public static final int empty_feed=0x7f030007;
     }
     public static final class menu {
-        public static final int activity_login_action_bar=0x7f0a0000;
-        public static final int menu=0x7f0a0001;
+        public static final int activity_login_action_bar=0x7f090000;
+        public static final int menu=0x7f090001;
     }
     public static final class string {
         public static final int accept=0x7f050002;

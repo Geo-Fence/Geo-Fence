@@ -1,4 +1,4 @@
-package edu.temple.rollcall.util;
+package edu.temple.rollcall.util.sessionlist;
 
 import edu.temple.rollcall.EnrollActivity;
 import edu.temple.rollcall.R;

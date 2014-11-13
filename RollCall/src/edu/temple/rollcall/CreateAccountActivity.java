@@ -2,15 +2,14 @@ package edu.temple.rollcall;
 
 import org.json.JSONObject;
 
-import edu.temple.rollcall.util.API;
 import edu.temple.rollcall.util.RollCallUtil;
+import edu.temple.rollcall.util.api.API;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +17,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CreateAccountActivity extends Activity {
+	
+	public static final int CANCEL_REQUEST = 1;
+	public static final int NEW_ACCOUNT_LOGIN_REQUEST = 2;
 	
 	EditText firstName;
 	EditText lastName;
@@ -52,6 +54,7 @@ public class CreateAccountActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case android.R.id.home: // Action bar back button.
+	    	setResult(CANCEL_REQUEST, getIntent());
 	    	finish();
 	        break;
 	    }
@@ -87,7 +90,7 @@ public class CreateAccountActivity extends Activity {
 				case "ok":
 					getIntent().putExtra("email", email.getText().toString());
 					getIntent().putExtra("password", password.getText().toString());
-					setResult(RESULT_OK, getIntent());
+					setResult(NEW_ACCOUNT_LOGIN_REQUEST, getIntent());
 					finish();
 					break;
 				case "error":

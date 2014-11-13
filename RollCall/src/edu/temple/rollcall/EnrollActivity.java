@@ -2,9 +2,9 @@ package edu.temple.rollcall;
 
 import org.json.JSONObject;
 
-import edu.temple.rollcall.util.API;
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.UserAccount;
+import edu.temple.rollcall.util.api.API;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
