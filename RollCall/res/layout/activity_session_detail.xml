@@ -3,79 +3,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="20dp"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <RelativeLayout
-        android:id="@+id/map_layout"
-        android:layout_width="match_parent"
-        android:layout_height="446dp"
-        android:padding="3dp"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_border"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <fragment
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                class="com.google.android.gms.maps.SupportMapFragment" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/session_detail_check_in_button"
-            style="@style/button_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:background="@drawable/check_in_button"
-            android:gravity="center"
-            android:text="Check-In"
-            android:textSize="40sp" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/session_detail_course_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/session_detail_course_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:textStyle="bold|italic" />
-    </LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
     
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/session_detail_teacher_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_below="@id/map_layout"
-        android:orientation="vertical" >
-         <TextView
-            android:id="@+id/session_detail_teacher_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:textStyle="bold|italic" />
-         <TextView
-            android:id="@+id/session_detail_session_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/session_detail_teacher_name"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:textStyle="bold|italic" />
-    </RelativeLayout>
+        android:layout_below="@id/session_detail_course_name"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <fragment
+        android:id="@+id/session_detail_map"
+        android:layout_width="match_parent"
+        android:layout_below="@id/session_detail_teacher_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="400dp"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+    
+    <ImageView
+        android:id="@+id/session_detail_map_overlay_top"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:scaleType="fitXY"
+        android:gravity="center_vertical"
+        android:layout_alignTop="@id/session_detail_map"
+        android:src="@drawable/session_detail_map_overlay_top" />
+    
+    <ImageView
+        android:id="@+id/session_detail_map_overlay_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:scaleType="fitXY"
+        android:gravity="center_vertical"
+        android:layout_alignBottom="@id/session_detail_map"
+        android:src="@drawable/session_detail_map_overlay_bottom" />
+    
+    <TextView
+        android:id="@+id/session_detail_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/session_detail_map"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
+        android:id="@+id/session_detail_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_detail_map"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/session_detail_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_detail_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <Button
+        android:id="@+id/session_detail_check_in_button"
+        style="@style/button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_detail_countdown"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/check_in_button"
+        android:text="@string/check_in_button"
+        android:textSize="40sp" />
+    
 
 </RelativeLayout>

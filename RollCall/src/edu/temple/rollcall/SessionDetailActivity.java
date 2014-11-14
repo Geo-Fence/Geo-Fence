@@ -1,8 +1,5 @@
 package edu.temple.rollcall;
 
-import java.util.concurrent.TimeUnit;
-
-import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,8 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
-
-import android.content.Intent;
+import edu.temple.rollcall.util.Session;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
@@ -27,13 +23,17 @@ import android.widget.TextView;
 
 public class SessionDetailActivity extends FragmentActivity {
 
+	private Session session;
 	private GoogleMap gMap;
+	private SessionDetailCountDownTimer timer;
 	
-	TextView course_name;
-	TextView teacher_name;
-	TextView session_time;
-	TextView timer;
-	Button check_in_button;
+	TextView courseName;
+	TextView teacherName;
+	TextView distance;
+	TextView time;
+	TextView countdown;
+	
+	Button checkInButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,99 +42,30 @@ public class SessionDetailActivity extends FragmentActivity {
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 				
-		course_name = (TextView) findViewById(R.id.session_detail_course_name);
-		teacher_name = (TextView) findViewById(R.id.session_detail_teacher_name);
-		session_time = (TextView) findViewById(R.id.session_detail_session_time);
-		check_in_button = (Button) findViewById(R.id.session_detail_check_in_button);
-		check_in_button.setOnClickListener(buttonListener);
+		courseName = (TextView) findViewById(R.id.session_detail_course_name);
+		teacherName = (TextView) findViewById(R.id.session_detail_teacher_name);
+		distance = (TextView) findViewById(R.id.session_detail_distance);
+		time = (TextView) findViewById(R.id.session_detail_time);
+		countdown = (TextView) findViewById(R.id.session_detail_countdown);
+		checkInButton = (Button) findViewById(R.id.session_detail_check_in_button);
+		checkInButton.setOnClickListener(buttonListener);
 
-		Intent intent = getIntent();
-		JSONObject sessionInfo = null;
+		session = null;
 		try {
-			sessionInfo = new JSONObject(intent.getExtras().getString("sessionInfo"));
-			course_name.setText(sessionInfo.getString("course_name"));
-			teacher_name.setText(sessionInfo.getString("teacher_first_name") + " " + sessionInfo.getString("teacher_last_name"));
-			
-			DateTime dateTime = new DateTime(Long.parseLong(sessionInfo.getString("start_time")) * 1000);
-			String sessionTime = dateTime.toString("E") + ", " + dateTime.toString("h:mm a") + " - ";
-			dateTime = dateTime.withMillis(Long.parseLong(sessionInfo.getString("end_time")) * 1000);
-			sessionTime = sessionTime + dateTime.toString("h:mm a");
-			session_time.setText(sessionTime);
-			
-			setUpMapIfNeeded(sessionInfo.getDouble("lat"), sessionInfo.getDouble("lng"));
+			session = new Session(new JSONObject(getIntent().getExtras().getString("sessionInfo")));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		
+		courseName.setText(session.courseName);
+		teacherName.setText(session.teacherName);
+		time.setText(session.dayOfWeek + ", " + session.startTimeString + " - " + session.endTimeString);
+		countdown.setText(session.timer.output);
+		
+		timer = new SessionDetailCountDownTimer(session, countdown);
+		
+		displayMap(session.latitude, session.longitude);
 	}
-	
-	private OnClickListener buttonListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			try{
-			} catch (Exception e) {
-				Log.e("Error: ", e.getMessage());
-			}
-			
-		}
-	};
-	
-	private void setUpMapIfNeeded(double lat, double lng) {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (gMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            gMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (gMap != null) {
-            	gMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Marker"));
-            	gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 17));
-            }
-        }
-    }
-	
-	public class CardCountDownTimer extends CountDownTimer {
-
-    	public String output;
-
-    	public CardCountDownTimer(long millisInFuture, long countDownInterval) {
-    		super(millisInFuture, countDownInterval);
-    		this.start();
-    	}
-
-    	@Override
-    	public void onTick(long millisUntilFinished) {
-    		Long millis = millisUntilFinished;
-    		long days = TimeUnit.MILLISECONDS.toDays(millis);
-    		millis -= TimeUnit.DAYS.toMillis(days);
-    		long hours = TimeUnit.MILLISECONDS.toHours(millis);
-    		millis -= TimeUnit.HOURS.toMillis(hours);
-    		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-    	
-    		// Generates a grammatically correct phrase...
-    		String message = "Begins in ";
-    		if(days < 1) {
-    			if(hours > 0) {
-    				message += hours;
-    				message += (hours == 1) ? " hour" : " hours";
-    				message += (minutes > 0) ? ", " : ".";
-    			} else if(minutes == 0) {
-    				message += "less than a minute.";
-    			}
-    			if(minutes > 0) {
-    				message += minutes;
-    				message += (minutes == 1) ? " minute." : " minutes.";
-    			}
-    			this.output = message;
-    		} else {
-    			this.output = "";
-    		}
-    	}
-
-    	@Override
-    	public void onFinish() {
-    		this.output = "In progress...";
-    	}
-    }
 	
 	@Override
 	protected void onResume() {
@@ -152,7 +83,52 @@ public class SessionDetailActivity extends FragmentActivity {
 	    return super.onOptionsItemSelected(item);
 	}
 	
+	private OnClickListener buttonListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			try{
+			} catch (Exception e) {
+				Log.e("Error: ", e.getMessage());
+			}
+			
+		}
+	};
 	
+	private void displayMap(double lat, double lng) {
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (gMap == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            gMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.session_detail_map)).getMap();
+            // Check if we were successful in obtaining the map.
+            if (gMap != null) {
+            	gMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(session.courseName));
+            	gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 17));
+            }
+        }
+    }
+	
+	private class SessionDetailCountDownTimer extends CountDownTimer {
+
+    	private TextView textView;
+    	private Session session;
+
+    	public SessionDetailCountDownTimer(Session session, TextView textView) {
+    		super(session.startTimeMillis, 1000);
+    		this.textView = textView;
+    		this.session = session;
+    		this.start();
+    	}
+
+    	@Override
+    	public void onTick(long millisUntilFinished) {
+    		this.textView.setText(session.timer.output);
+    	}
+
+    	@Override
+    	public void onFinish() {
+    		this.textView.setText("In progress...");
+    	}
+    }
 }
 
 
