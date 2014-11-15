@@ -13,7 +13,6 @@
         <ImageView android:id="@+id/card_icon"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:contentDescription="Icon"
             android:scaleType="fitXY"
             android:padding="1dp"
             android:layout_alignParentLeft="true"

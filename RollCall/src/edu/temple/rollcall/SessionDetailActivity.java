@@ -1,8 +1,14 @@
 package edu.temple.rollcall;
 
+import java.text.DecimalFormat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -11,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
@@ -21,17 +28,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SessionDetailActivity extends FragmentActivity {
+public class SessionDetailActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
+	private GoogleApiClient googleApiClient;
+	private LocationRequest locationRequest;
+	
 	private Session session;
 	private GoogleMap gMap;
 	private SessionDetailCountDownTimer timer;
 	
-	TextView courseName;
-	TextView teacherName;
-	TextView distance;
-	TextView time;
-	TextView countdown;
+	private TextView courseName;
+	private TextView teacherName;
+	private TextView distance;
+	private TextView time;
+	private TextView countdown;
 	
 	Button checkInButton;
 	
@@ -41,6 +51,12 @@ public class SessionDetailActivity extends FragmentActivity {
 		setContentView(R.layout.activity_session_detail);
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		googleApiClient = new GoogleApiClient.Builder(this)
+		.addApi(LocationServices.API)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .build();
 				
 		courseName = (TextView) findViewById(R.id.session_detail_course_name);
 		teacherName = (TextView) findViewById(R.id.session_detail_teacher_name);
@@ -63,6 +79,7 @@ public class SessionDetailActivity extends FragmentActivity {
 		countdown.setText(session.timer.output);
 		
 		timer = new SessionDetailCountDownTimer(session, countdown);
+		timer.start();
 		
 		displayMap(session.latitude, session.longitude);
 	}
@@ -71,6 +88,31 @@ public class SessionDetailActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		RollCallUtil.checkPlayServices(this);
+		googleApiClient.connect();
+	}
+	
+	@Override
+    protected void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
+    }
+	
+	@Override
+	public void onLocationChanged(Location location) {
+		float[] meters = new float[1];
+		Location.distanceBetween(session.latitude, session.longitude, location.getLatitude(), location.getLongitude(), meters);
+		DecimalFormat df = new DecimalFormat("###.#");
+		distance.setText(df.format(meters[0] * 0.000621371) + " miles away");
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		locationRequest = LocationRequest.create();
+		locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+		locationRequest.setInterval(1000); // Update location every second
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                googleApiClient, locationRequest, SessionDetailActivity.this);
 	}
 	
 	@Override
@@ -116,7 +158,6 @@ public class SessionDetailActivity extends FragmentActivity {
     		super(session.startTimeMillis, 1000);
     		this.textView = textView;
     		this.session = session;
-    		this.start();
     	}
 
     	@Override
@@ -129,6 +170,18 @@ public class SessionDetailActivity extends FragmentActivity {
     		this.textView.setText("In progress...");
     	}
     }
+
+	@Override
+	public void onConnectionSuspended(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 
