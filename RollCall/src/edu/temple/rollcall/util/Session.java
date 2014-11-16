@@ -69,6 +69,10 @@ public class Session {
     		long hours = TimeUnit.MILLISECONDS.toHours(millis);
     		millis -= TimeUnit.HOURS.toMillis(hours);
     		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+    		
+    		days++;
+    		hours++;
+    		minutes++;
     	
     		// Generates a grammatically correct phrase...
     		String message = "Begins in ";
@@ -76,18 +80,19 @@ public class Session {
     			if(hours > 0) {
     				message += hours;
     				message += (hours == 1) ? " hour" : " hours";
-    				message += (minutes > 0) ? ", " : ".";
+    				message += (minutes >= 0) ? ", " : "";
     			} else if(minutes == 0) {
-    				message += "less than a minute.";
+    				message += "less than a minute";
     			}
     			if(minutes > 0) {
     				message += minutes;
-    				message += (minutes == 1) ? " minute." : " minutes.";
+    				message += (minutes == 1) ? " minute" : " minutes";
     			}
-    			this.output = message;
     		} else {
-    			this.output = "";
+    			message += days;
+    			message += (days > 1) ? " days" : " day";
     		}
+    		this.output = message;
     	}
 
     	@Override

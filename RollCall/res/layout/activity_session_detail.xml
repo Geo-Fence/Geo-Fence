@@ -34,7 +34,7 @@
     <ImageView
         android:id="@+id/session_detail_map_overlay_top"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:scaleType="fitXY"
         android:gravity="center_vertical"
         android:layout_alignTop="@id/session_detail_map"
@@ -43,24 +43,11 @@
     <ImageView
         android:id="@+id/session_detail_map_overlay_bottom"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:scaleType="fitXY"
         android:gravity="center_vertical"
         android:layout_alignBottom="@id/session_detail_map"
         android:src="@drawable/session_detail_map_overlay_bottom" />
-    
-    <TextView
-        android:id="@+id/session_detail_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/session_detail_map"
-        android:layout_marginBottom="10dp"
-        android:layout_centerHorizontal="true"
-        android:shadowColor="@android:color/white"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="10"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
         android:id="@+id/session_detail_time"
@@ -68,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/session_detail_map"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <TextView
@@ -76,15 +64,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/session_detail_time"
         android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
+        android:id="@+id/session_detail_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_detail_countdown"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <Button
         android:id="@+id/session_detail_check_in_button"
         style="@style/button_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/session_detail_countdown"
+        android:layout_below="@id/session_detail_distance"
         android:layout_centerHorizontal="true"
         android:background="@drawable/check_in_button"
         android:text="@string/check_in_button"
