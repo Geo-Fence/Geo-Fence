@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.api.API;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -129,6 +130,23 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 		@Override
 		public void onClick(View v) {
 			try{
+				//testing Check-In Feature of the API 
+				//TODO: add logic to see if class start time is close enough to current time 
+				// to allow user to checkIn
+				if(GeofenceTransitionService.canCheckIn()){
+					/* Should make an call to the server to add the current/logged-in student to 
+					 * the list of students currently attending the class
+					 * (Not Complete yet)
+					 */
+					checkInButton.setVisibility(Button.VISIBLE);
+					String studentId = GeofenceTransitionService.getStudentId();
+					String sessionId = GeofenceTransitionService.getSessionId();
+					API.checkIn(getBaseContext(), studentId, sessionId);
+					
+					
+				}
+				
+				
 			} catch (Exception e) {
 				Log.e("Error: ", e.getMessage());
 			}

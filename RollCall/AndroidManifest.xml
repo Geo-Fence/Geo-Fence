@@ -58,6 +58,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD5P49mMdh70olpRlPeVBr8Fgc_78F3sXM" />
 
+        <service
+            android:name=".GeofenceTransitionService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

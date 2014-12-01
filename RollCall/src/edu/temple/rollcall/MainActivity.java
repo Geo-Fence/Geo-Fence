@@ -1,22 +1,37 @@
 package edu.temple.rollcall;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import edu.temple.rollcall.R;
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
 import edu.temple.rollcall.util.UserAccount;
 import edu.temple.rollcall.util.api.API;
+import edu.temple.rollcall.util.api.GeoFenceAPI;
 import edu.temple.rollcall.util.sessionlist.EmptyFeedFragment;
 import edu.temple.rollcall.util.sessionlist.SessionListFragment;
-
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,15 +44,42 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements
+		ConnectionCallbacks, OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
 
 	static final int LOGIN_REQUEST = 1111;
 
 	ProgressBar refreshSpinner;
 	FrameLayout cardListContainer;
-	
+
 	ArrayList<Session> sessionList;
 
+	GoogleApiClient googleApiClient;
+	List<Geofence> geofenceList = new ArrayList<Geofence>();
+	LocationClient locationClient;
+
+	private GeoFenceAPI geofenceapi;
+
+	private String mCourseId;
+	private double mGeoFenceLatitude;
+	private double mGeoFenceLongitude;
+	private float mGeoFenceRadius = 100;
+	private long mGeoFenceExpirationDuration;
+	private int mTransitionType;
+	private double mStartTime;
+	private double mEndTime;
+	private boolean mInProgress;
+	private boolean mBuiltGeofences;
+	private boolean mWaitingForJSONParse;
+
+	private String sessionId;
+	
+	//variables for testing Geofences
+	
+	LocationRequest locationRequest;
+	
+	//End testing varibales
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,24 +87,41 @@ public class MainActivity extends Activity {
 		setTitle(R.string.title_activity_main);
 		getActionBar().setDisplayShowHomeEnabled(false);
 
+		googleApiClient = new GoogleApiClient.Builder(this)
+				.addApi(LocationServices.API).addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this).build();
+
 		refreshSpinner = (ProgressBar) findViewById(R.id.refresh_spinner);
 		cardListContainer = (FrameLayout) findViewById(R.id.card_layout_container);
-		
+
 		sessionList = new ArrayList<Session>();
-		
+
 		// If the user hasn't signed in, start the login activity.
-		if(UserAccount.studentId == null) {
+		if (UserAccount.studentId == null) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivityForResult(intent, LOGIN_REQUEST);
 		}
 
 		// Other activities can start MainActivity with a "refresh" action.
-		if(getIntent().getAction().equals("refresh")) {
+		if (getIntent().getAction().equals("refresh")) {
 			refreshFeed();
 		}
 	}
 
-	// Make sure google play services is working whenever the activity is resumed.
+	@Override
+	protected void onStart() {
+		//googleApiClient.connect();
+		super.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		googleApiClient.disconnect();
+		super.onStop();
+	}
+
+	// Make sure google play services is working whenever the activity is
+	// resumed.
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -74,7 +133,7 @@ public class MainActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return true;
-	} 
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -100,15 +159,21 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch(requestCode) {
+		switch (requestCode) {
 		case LOGIN_REQUEST: // Sent back from LoginActivity.
 			if (resultCode == RESULT_OK) {
 				refreshFeed();
 				break;
 			}
-		case RollCallUtil.REQUEST_CODE_RECOVER_PLAY_SERVICES: // Sent back from RollCallUtil after checking for google play services.
+		case RollCallUtil.REQUEST_CODE_RECOVER_PLAY_SERVICES: // Sent back from
+																// RollCallUtil
+																// after
+																// checking for
+																// google play
+																// services.
 			if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(this, "Google Play Services must be installed.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Google Play Services must be installed.",
+						Toast.LENGTH_SHORT).show();
 				finish();
 			}
 			return;
@@ -122,12 +187,15 @@ public class MainActivity extends Activity {
 		refreshSpinner.setVisibility(View.VISIBLE); // Show a progress spinner.
 		Thread t = new Thread() {
 			@Override
-			public void run(){
+			public void run() {
 				try {
-					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId); 
+					JSONObject response = API.getSessionsForStudent(
+							MainActivity.this, UserAccount.studentId);
 					Message msg = Message.obtain();
 					msg.obj = response;
-					refreshFeedHandler.sendMessage(msg); // Send sessions from thread to listener.
+					refreshFeedHandler.sendMessage(msg); // Send sessions from
+															// thread to
+															// listener.
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -140,37 +208,79 @@ public class MainActivity extends Activity {
 	Handler refreshFeedHandler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
-			refreshSpinner.setVisibility(View.GONE); // Remove the progress spinner.
+			refreshSpinner.setVisibility(View.GONE); // Remove the progress
+														// spinner.
 			JSONObject response = (JSONObject) msg.obj;
 			try {
-				String status = response.getString("status");	
-				switch(status) {
+				String status = response.getString("status");
+				switch (status) {
 				case "ok":
-					// If API call was successful but no sessions were returned, prompt the user to enroll in a course.
-					if(response.getJSONArray("sessionArray").isNull(0)) {
-						FragmentTransaction ft = getFragmentManager().beginTransaction();
-						ft.add(cardListContainer.getId() , new EmptyFeedFragment()); // Add an EmptyFeedFragment to the container.
+					// If API call was successful but no sessions were returned,
+					// prompt the user to enroll in a course.
+					if (response.getJSONArray("sessionArray").isNull(0)) {
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
+						ft.add(cardListContainer.getId(),
+								new EmptyFeedFragment()); // Add an
+															// EmptyFeedFragment
+															// to the container.
 						ft.commit();
 					} else {
 						SessionListFragment cardListFragment = new SessionListFragment();
-						// Send the JSON array of sessions to the CardListFragment.
+						// Send the JSON array of sessions to the
+						// CardListFragment.
 						Bundle args = new Bundle();
-						args.putString("sessionArray", response.getJSONArray("sessionArray").toString());
+						args.putString("sessionArray",
+								response.getJSONArray("sessionArray")
+										.toString());
 						cardListFragment.setArguments(args);
-						
+
 						// Add the cardListFragment to the container view.
-						FragmentTransaction ft = getFragmentManager().beginTransaction();
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
 						ft.add(cardListContainer.getId(), cardListFragment);
 						ft.commit();
-						
-						JSONArray sessionArray = new JSONArray(response.getJSONArray("sessionArray").toString());
-						for(int i = 0 ; i < sessionArray.length() ; i++) {
-							sessionList.add(new Session(sessionArray.getJSONObject(i)));
+
+						JSONArray sessionArray = new JSONArray(response
+								.getJSONArray("sessionArray").toString());
+						for (int i = 0; i < sessionArray.length(); i++) {
+							sessionList.add(new Session(sessionArray
+									.getJSONObject(i)));
 						}
+						try{
+							sessionId = sessionArray.getString(0);
+						}
+						catch (Exception e) {
+							// TODO: handle exception
+						}
+						
+
+						// add geofence builder here?
+						try {
+							// gets only the next session info to create the Geofence
+							JSONObject jsonGeoFenceRes = sessionArray.getJSONObject(0);
+							mCourseId = jsonGeoFenceRes.getString("course_name");
+							mGeoFenceLatitude = jsonGeoFenceRes.getDouble("lat");
+							mGeoFenceLongitude = jsonGeoFenceRes.getDouble("lng");
+							// This is a placeholder value
+							// Probably will set the radius to something else later
+							mGeoFenceRadius = 10;
+							mWaitingForJSONParse = false;
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						//buildGeofences(sessionArray);
+						googleApiClient.connect();
+
 					}
 					break;
 				case "error": // MySQL error in API call.
-					Log.d("MainActivity", "MySQL error " + response.getString("errno").toString());
+					Log.d("MainActivity",
+							"MySQL error "
+									+ response.getString("errno").toString());
 					break;
 				}
 			} catch (JSONException e) {
@@ -178,7 +288,30 @@ public class MainActivity extends Activity {
 			}
 			return true;
 		}
+
 	});
+
+	private void buildGeofences(JSONArray sessionArray) {
+		try {
+			// gets only the next session info to create the Geofence
+			JSONObject jsonGeoFenceRes = sessionArray.getJSONObject(0);
+			mCourseId = jsonGeoFenceRes.getString("course_name");
+			mGeoFenceLatitude = jsonGeoFenceRes.getDouble("lat");
+			mGeoFenceLongitude = jsonGeoFenceRes.getDouble("lng");
+			// This is a placeholder value
+			// Probably will set the radius to something else later
+			mGeoFenceRadius = 10;
+			mWaitingForJSONParse = false;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Don't add the geofence is Google Play is unavailabe, or if there is
+		// already one registered
+		
+	}
 
 	private void logout() {
 		cardListContainer.removeAllViews(); // Remove all session cards.
@@ -186,6 +319,83 @@ public class MainActivity extends Activity {
 		// Start the login activity.
 		Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 		startActivityForResult(intent, LOGIN_REQUEST);
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		/*Code for testing Geofences
+		locationRequest = LocationRequest.create();
+		locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+		locationRequest.setInterval(1000); // Update location every second
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                googleApiClient, locationRequest, MainActivity.this);
+        
+        //end code for testing geofences */
+		
+		if (!servicesConnected() || mBuiltGeofences) {
+			return;
+		}
+		while(mWaitingForJSONParse){ }
+		Geofence spareGeofence = new Geofence.Builder()
+				.setRequestId(mCourseId)
+				.setTransitionTypes(
+						Geofence.GEOFENCE_TRANSITION_ENTER
+								| Geofence.GEOFENCE_TRANSITION_DWELL
+								| Geofence.GEOFENCE_TRANSITION_EXIT)
+				.setCircularRegion(mGeoFenceLatitude, mGeoFenceLongitude,
+						1)
+				.setLoiteringDelay(100000)
+				.setExpirationDuration(mGeoFenceExpirationDuration).build();
+		geofenceList.add(spareGeofence);
+		mBuiltGeofences = true;
+
+		try {
+			//geofenceapi.registerGeofences(geofenceList);
+			
+			
+		} catch (UnsupportedOperationException e) {
+			// Handle that previous request hasn't finished.
+		}
+		Intent intent = new Intent(this,
+				GeofenceTransitionService.class);
+		intent.putExtra("student_id", UserAccount.studentId);
+		intent.putExtra("session_id", sessionId);
+		PendingIntent geofenceTransitionPendingIntent = PendingIntent
+				.getService(this, 0, intent,
+						PendingIntent.FLAG_UPDATE_CURRENT);
+		LocationServices.GeofencingApi.addGeofences(googleApiClient, geofenceList, geofenceTransitionPendingIntent);
+	}
+
+	private boolean servicesConnected() {
+		// Check that Google Play services is available
+		int resultCode = GooglePlayServicesUtil
+				.isGooglePlayServicesAvailable(this);
+		if (ConnectionResult.SUCCESS == resultCode) {
+			// Handle success
+			return true;
+		} else {
+			// Handle the error
+			return false;
+		}
+	}
+
+	@Override
+	public void onConnectionSuspended(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
