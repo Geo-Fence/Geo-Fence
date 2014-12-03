@@ -1,6 +1,7 @@
 package edu.temple.rollcall;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,11 +18,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
-import edu.temple.rollcall.util.UserAccount;
 import edu.temple.rollcall.util.api.API;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -47,9 +48,7 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 	private TextView countdown;
 	
 	Button checkInButton;
-	
-	boolean allowCheckIn = false;
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,9 +70,6 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 		checkInButton = (Button) findViewById(R.id.session_detail_check_in_button);
 		checkInButton.setOnClickListener(buttonListener);
 		
-		checkInButton.setVisibility(View.GONE);
-		setCheckInButtonVisibility();
-
 		session = null;
 		try {
 			session = new Session(new JSONObject(getIntent().getExtras().getString("sessionInfo")));
@@ -89,6 +85,12 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 		timer = new SessionDetailCountDownTimer(session, countdown);
 		timer.start();
 		
+		if(session.startTimeMillis <= new Date().getTime()) {
+			checkInButton.setVisibility(View.VISIBLE);
+		} else {
+			checkInButton.setVisibility(View.GONE);
+		}
+
 		displayMap(session.latitude, session.longitude);
 	}
 	
@@ -137,16 +139,7 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 		@Override
 		public void onClick(View v) {
 			try{
-				//testing Check-In Feature of the API 
-				//TODO: add logic to see if class start time is close enough to current time 
-				// to allow user to checkIn
-				//TODO: change UI of Button session to reflect user sign-in
 				if(GeofenceTransitionService.canCheckIn()){
-					/* Should make an call to the server to add the current/logged-in student to 
-					 * the list of students currently attending the class
-					 * (Not Complete yet)
-					 */
-					
 					Thread u = new Thread() {
 						@Override
 						public void run() {
@@ -154,24 +147,21 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 								String studentId = GeofenceTransitionService.getStudentId();
 								String sessionId = GeofenceTransitionService.getSessionId();
 								JSONObject checkInResponse = API.checkIn(getBaseContext(), studentId, sessionId); 
-								String responseString = checkInResponse.getString("status");
-								switch(responseString){
-								case "ok":
-									System.out.println("Check In has occurred successfully");
-									break;
+								String status = checkInResponse.getString("status");
+								Message msg = Message.obtain();
+								if(status.equals("ok")) {
+									msg.obj = status;
+								} else {
+									msg.obj = checkInResponse.getString("errno");
 								}
-								
+								checkInHandler.sendMessage(msg);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						}
 					};
 					u.start();
-					
-					
-					
 				}
-				
 				
 			} catch (Exception e) {
 				Log.e("Error: ", e.getMessage());
@@ -179,6 +169,23 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 			
 		}
 	};
+	
+	Handler checkInHandler = new Handler(new Handler.Callback() {
+		
+		@Override
+		public boolean handleMessage(Message msg) {
+			if(msg.obj.equals("ok")) {
+				session.checkedIn = true;
+				checkInButton.setText("Checked in");
+				checkInButton.setEnabled(false);
+			} else if (msg.obj.equals(String.valueOf(1062))) { // Already checked in
+				checkInButton.setText("Checked in");
+				checkInButton.setEnabled(false);
+			}
+			return false;
+		}
+	});
+	
 	
 	private void displayMap(double lat, double lng) {
         // Do a null check to confirm that we have not already instantiated the map.
@@ -225,18 +232,6 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	private void setCheckInButtonVisibility(){
-		if((GeofenceTransitionService.canCheckIn()==true)) {
-//			if(session.startTimeMillis < (System.currentTimeMillis() -5)) {
-//			allowCheckIn = true;
-//			}
-			checkInButton.setVisibility(View.VISIBLE);
-		}
-		else{
-			checkInButton.setVisibility(View.GONE);
-		}
 	}
 }
 

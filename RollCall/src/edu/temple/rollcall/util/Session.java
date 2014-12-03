@@ -23,9 +23,11 @@ public class Session {
 	public long startTimeMillis;
 	public long endTimeMillis;
 	public SessionCountDownTimer timer;
+	public boolean checkedIn;
     
     public Session(JSONObject jsonSession) {
     	this.jsonSession = jsonSession;
+    	this.checkedIn = false;
     	
     	try {
     		this.sessionId = jsonSession.getString("session_id");
