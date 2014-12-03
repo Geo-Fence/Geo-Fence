@@ -134,7 +134,7 @@ public class API  {
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
 	 * 		   Errno 0 means the enrollment code was invalid.
 	 * 		   Errno 1062 means the student is already enrolled in the course.
-	 * See login.php for more details.
+	 * See php for more details.
 	 */
 	public static JSONObject enroll(Context context, String studentId, String enrollmentCode) {
 		try {
@@ -154,7 +154,7 @@ public class API  {
 	 * @return On success, returns a JSON object containing "status":"ok".
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
 	 * 		   Errno 1062 means an account already exists for the provided email.
-	 * See createuser.php for more details.
+	 * See php for more details.
 	 */
 	public static JSONObject createAccount(Context context, String firstName, String lastName, String email, String password) {
 		try {
@@ -170,22 +170,4 @@ public class API  {
 		}
 	}
 	
-	/**
-	 * Check if a user is already checked into a session.
-	 * @param context
-	 * @param student_id
-	 * @param session_id
-	 * @return On success, returns a JSON object containing "status":"true" of "false".
-	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
-	 * See ischeckedin.php for more details.
-	 */
-	public static JSONObject isCheckedIn(Context context, String student_id, String session_id) {
-		try {
-			String response = makeAPICall(context, "ischeckedin.php?student_id=" + student_id + "&session_id=" + session_id);
-			return new JSONObject(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 }
