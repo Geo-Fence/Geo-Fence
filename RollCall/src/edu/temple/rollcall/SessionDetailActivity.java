@@ -17,10 +17,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.UserAccount;
 import edu.temple.rollcall.util.api.API;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -46,6 +48,8 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 	
 	Button checkInButton;
 	
+	boolean allowCheckIn = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +70,9 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 		countdown = (TextView) findViewById(R.id.session_detail_countdown);
 		checkInButton = (Button) findViewById(R.id.session_detail_check_in_button);
 		checkInButton.setOnClickListener(buttonListener);
+		
+		checkInButton.setVisibility(View.GONE);
+		setCheckInButtonVisibility();
 
 		session = null;
 		try {
@@ -139,10 +146,29 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 					 * the list of students currently attending the class
 					 * (Not Complete yet)
 					 */
-					checkInButton.setVisibility(Button.VISIBLE);
-					String studentId = GeofenceTransitionService.getStudentId();
-					String sessionId = GeofenceTransitionService.getSessionId();
-					API.checkIn(getBaseContext(), studentId, sessionId);
+					
+					Thread u = new Thread() {
+						@Override
+						public void run() {
+							try {
+								String studentId = GeofenceTransitionService.getStudentId();
+								String sessionId = GeofenceTransitionService.getSessionId();
+								JSONObject checkInResponse = API.checkIn(getBaseContext(), studentId, sessionId); 
+								String responseString = checkInResponse.getString("status");
+								switch(responseString){
+								case "ok":
+									System.out.println("Check In has occurred successfully");
+									break;
+								}
+								
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					};
+					u.start();
+					
+					
 					
 				}
 				
@@ -199,6 +225,18 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void setCheckInButtonVisibility(){
+		if((GeofenceTransitionService.canCheckIn()==true)) {
+//			if(session.startTimeMillis < (System.currentTimeMillis() -5)) {
+//			allowCheckIn = true;
+//			}
+			checkInButton.setVisibility(View.VISIBLE);
+		}
+		else{
+			checkInButton.setVisibility(View.GONE);
+		}
 	}
 }
 

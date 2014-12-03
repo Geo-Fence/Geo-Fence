@@ -65,7 +65,6 @@ public class MainActivity extends Activity implements
 	private double mEndTime;
 	private boolean mInProgress;
 	private boolean mBuiltGeofences;
-	private boolean mWaitingForJSONParse;
 
 	private String sessionId;
 	
@@ -99,7 +98,9 @@ public class MainActivity extends Activity implements
 
 	@Override
 	protected void onStart() {
+		
 		googleApiClient.connect();
+		
 		super.onStart();
 	}
 

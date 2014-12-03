@@ -49,8 +49,6 @@ public class GeofenceTransitionService extends IntentService {
 						"Geofence Transition was of type: Geofence.GEOFENCE_TRANSITION_ENTER");
 				// set checkIn = true which will allow the 'Check In' Button in
 				// sessionDeatilActivity to do an action
-				// TODO: allow this to set the Check in button from invisible to
-				// visible
 				// TODO: create a notification to send to user when this
 				// transition happens
 				checkIn = true;
