@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SessionDetailActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -232,6 +233,32 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	//TODO: add checkout when the class time < current time
+	private void checkOut(){
+		if(GeofenceTransitionService.canCheckOut()){
+		Thread v = new Thread() {
+			@Override
+			public void run() {
+				try {
+					String studentId = GeofenceTransitionService.getStudentId();
+					String sessionId = GeofenceTransitionService.getSessionId();
+					boolean checkOutResponse = API.checkOut(getBaseContext(), studentId, sessionId); 
+					Message msg = Message.obtain();
+					if(checkOutResponse) {
+						Toast toast = Toast.makeText(getApplicationContext(), "Checked out of Class", Toast.LENGTH_SHORT);
+						toast.show();
+					} else {
+						//msg.obj = checkOutResponse.getString("errno");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		v.start();
+	}
 	}
 }
 

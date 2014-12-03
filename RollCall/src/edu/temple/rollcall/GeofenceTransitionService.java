@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class GeofenceTransitionService extends IntentService {
 
-	private static boolean checkIn;
+	private static boolean checkIn, checkOut;
 	private static String studentId, sessionId;
 
 	public GeofenceTransitionService() {
@@ -59,6 +59,7 @@ public class GeofenceTransitionService extends IntentService {
 						"Geofence Transition was of type: Geofence.GEOFENCE_TRANSITION_EXIT");
 				// TODO: create a notification to send to user when this
 				// transition happens
+				checkOut = true;
 				checkIn = false;
 				break;
 
@@ -81,6 +82,9 @@ public class GeofenceTransitionService extends IntentService {
 
 	public static boolean canCheckIn() {
 		return checkIn;
+	}
+	public static boolean canCheckOut(){
+		return checkOut;
 	}
 
 	public static String getSessionId() {
