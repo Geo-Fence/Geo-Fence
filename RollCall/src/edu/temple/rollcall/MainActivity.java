@@ -55,18 +55,11 @@ public class MainActivity extends Activity implements
 	List<Geofence> geofenceList = new ArrayList<Geofence>();
 	LocationClient locationClient;
 
-	private String mCourseId;
 	private double mGeoFenceLatitude;
 	private double mGeoFenceLongitude;
 	private float mGeoFenceRadius = 100;
-	private long mGeoFenceExpirationDuration;
-	private int mTransitionType;
-	private double mStartTime;
-	private double mEndTime;
-	private boolean mInProgress;
-	private boolean mBuiltGeofences;
 
-	private String sessionId;
+	private String nextSessionId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -211,10 +204,12 @@ public class MainActivity extends Activity implements
 						FragmentTransaction ft = getFragmentManager()
 								.beginTransaction();
 						ft.add(cardListContainer.getId(),
-								new EmptyFeedFragment()); // Add an
+								new EmptyFeedFragment());   // Add an
 															// EmptyFeedFragment
 															// to the container.
 						ft.commit();
+						
+					// Else, API call was successful and we have sessions.
 					} else {
 						SessionListFragment cardListFragment = new SessionListFragment();
 						// Send the JSON array of sessions to the
@@ -237,24 +232,44 @@ public class MainActivity extends Activity implements
 							sessionList.add(new Session(sessionArray
 									.getJSONObject(i)));
 						}
+						
+						// Create geofence for next session
 						try {
 							// gets only the next session info to create the Geofence
-							JSONObject jsonGeoFenceRes = sessionArray.getJSONObject(0);
-							System.out.println(sessionArray.getJSONObject(0).getString("session_id"));
-							sessionId = jsonGeoFenceRes.getString("session_id");
-							mCourseId = jsonGeoFenceRes.getString("course_name");
-							mGeoFenceLatitude = jsonGeoFenceRes.getDouble("lat");
-							mGeoFenceLongitude = jsonGeoFenceRes.getDouble("lng");
-							// This is a placeholder value
-							// Probably will set the radius to something else later
-							mGeoFenceRadius = 10;
+							Session nextSession = sessionList.get(0);
+							nextSessionId = nextSession.sessionId;
+							mGeoFenceLatitude = nextSession.latitude;
+							mGeoFenceLongitude = nextSession.longitude;
+							mGeoFenceRadius = 1000;
 
-						} catch (JSONException e) {
+							if (servicesConnected()) {
+								
+								Geofence spareGeofence = new Geofence.Builder()
+								.setRequestId(nextSessionId)
+								.setTransitionTypes(
+										Geofence.GEOFENCE_TRANSITION_ENTER
+												| Geofence.GEOFENCE_TRANSITION_DWELL
+												| Geofence.GEOFENCE_TRANSITION_EXIT)
+								.setCircularRegion(mGeoFenceLatitude, mGeoFenceLongitude,
+										mGeoFenceRadius)
+								.setLoiteringDelay(5000)
+								.setExpirationDuration(Geofence.NEVER_EXPIRE).build();
+								
+								geofenceList.add(spareGeofence);
+
+								Intent intent = new Intent(MainActivity.this,
+										GeofenceTransitionService.class);
+								intent.putExtra("student_id", UserAccount.studentId);
+								intent.putExtra("session_id", nextSessionId);
+								PendingIntent geofenceTransitionPendingIntent = PendingIntent
+										.getService(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+								LocationServices.GeofencingApi.addGeofences(googleApiClient, geofenceList, geofenceTransitionPendingIntent);
+							}
+							
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						mBuiltGeofences = false;
-
 					}
 					break;
 				case "error": // MySQL error in API call.
@@ -287,39 +302,7 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		
-		if (!servicesConnected() || mBuiltGeofences) {
-			Log.d("OnConnected Error:", "services not connected or geofences were already built");
-			return;
-		}
-		
-		//These are the test variables; Change them to whatever you prefer
-		double mTestLatitude = 39.9812170;
-		double mTestLongitude = -75.1637760;
-		sessionId = "1234567890";
-		
-		Geofence spareGeofence = new Geofence.Builder()
-				.setRequestId(sessionId)
-				.setTransitionTypes(
-						Geofence.GEOFENCE_TRANSITION_ENTER
-								| Geofence.GEOFENCE_TRANSITION_DWELL
-								| Geofence.GEOFENCE_TRANSITION_EXIT)
-				.setCircularRegion(mTestLatitude, mTestLongitude,
-						1000)
-				.setLoiteringDelay(5000)
-				.setExpirationDuration(Geofence.NEVER_EXPIRE).build();
-		
-		geofenceList.add(spareGeofence);
-		mBuiltGeofences = true;
-
-		Intent intent = new Intent(this,
-				GeofenceTransitionService.class);
-		intent.putExtra("student_id", UserAccount.studentId);
-		intent.putExtra("session_id", sessionId);
-		PendingIntent geofenceTransitionPendingIntent = PendingIntent
-				.getService(this, 0, intent,
-						PendingIntent.FLAG_UPDATE_CURRENT);
-		LocationServices.GeofencingApi.addGeofences(googleApiClient, geofenceList, geofenceTransitionPendingIntent);
+		return;
 	}
 
 	private boolean servicesConnected() {

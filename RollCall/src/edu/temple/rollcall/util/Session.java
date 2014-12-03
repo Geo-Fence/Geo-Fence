@@ -12,6 +12,7 @@ public class Session {
 	
 	private JSONObject jsonSession;
 	
+	public String sessionId;
 	public String courseName;
     public String teacherName;
     public String dayOfWeek;
@@ -27,6 +28,7 @@ public class Session {
     	this.jsonSession = jsonSession;
     	
     	try {
+    		this.sessionId = jsonSession.getString("session_id");
     		this.courseName = jsonSession.getString("course_name");
     		this.teacherName = jsonSession.getString("teacher_first_name") + " " + jsonSession.getString("teacher_last_name");
     		

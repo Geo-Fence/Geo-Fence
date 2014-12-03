@@ -27,6 +27,7 @@ public class GeofenceTransitionService extends IntentService {
 			studentId = intent.getStringExtra("student_id");
 			sessionId = intent.getStringExtra("session_id");
 			GeofencingEvent geofenceEvent = GeofencingEvent.fromIntent(intent);
+			
 			// Logic to decide what to do for each transition type
 			switch (geofenceEvent.getGeofenceTransition()) 
 			{
@@ -71,6 +72,7 @@ public class GeofenceTransitionService extends IntentService {
 			}
 
 		}
+		
 		// intent == null;
 		else {
 			Log.e("ERROR", "Error in GeofenceTransition:  Intent is null");
