@@ -7,26 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
-import edu.temple.rollcall.R;
-import edu.temple.rollcall.util.RollCallUtil;
-import edu.temple.rollcall.util.Session;
-import edu.temple.rollcall.util.UserAccount;
-import edu.temple.rollcall.util.api.API;
-import edu.temple.rollcall.util.api.GeoFenceAPI;
-import edu.temple.rollcall.util.sessionlist.EmptyFeedFragment;
-import edu.temple.rollcall.util.sessionlist.SessionListFragment;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -44,6 +24,23 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+import edu.temple.rollcall.util.RollCallUtil;
+import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.UserAccount;
+import edu.temple.rollcall.util.api.API;
+import edu.temple.rollcall.util.sessionlist.EmptyFeedFragment;
+import edu.temple.rollcall.util.sessionlist.SessionListFragment;
+
 public class MainActivity extends Activity implements
 		ConnectionCallbacks, OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
 
@@ -58,8 +55,6 @@ public class MainActivity extends Activity implements
 	List<Geofence> geofenceList = new ArrayList<Geofence>();
 	LocationClient locationClient;
 
-	private GeoFenceAPI geofenceapi;
-
 	private String mCourseId;
 	private double mGeoFenceLatitude;
 	private double mGeoFenceLongitude;
@@ -73,12 +68,6 @@ public class MainActivity extends Activity implements
 	private boolean mWaitingForJSONParse;
 
 	private String sessionId;
-	
-	//variables for testing Geofences
-	
-	LocationRequest locationRequest;
-	
-	//End testing varibales
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +99,7 @@ public class MainActivity extends Activity implements
 
 	@Override
 	protected void onStart() {
-		//googleApiClient.connect();
+		googleApiClient.connect();
 		super.onStart();
 	}
 
@@ -247,33 +236,23 @@ public class MainActivity extends Activity implements
 							sessionList.add(new Session(sessionArray
 									.getJSONObject(i)));
 						}
-						try{
-							sessionId = sessionArray.getString(0);
-						}
-						catch (Exception e) {
-							// TODO: handle exception
-						}
-						
-
-						// add geofence builder here?
 						try {
 							// gets only the next session info to create the Geofence
 							JSONObject jsonGeoFenceRes = sessionArray.getJSONObject(0);
+							System.out.println(sessionArray.getJSONObject(0).getString("session_id"));
+							sessionId = jsonGeoFenceRes.getString("session_id");
 							mCourseId = jsonGeoFenceRes.getString("course_name");
 							mGeoFenceLatitude = jsonGeoFenceRes.getDouble("lat");
 							mGeoFenceLongitude = jsonGeoFenceRes.getDouble("lng");
 							// This is a placeholder value
 							// Probably will set the radius to something else later
 							mGeoFenceRadius = 10;
-							mWaitingForJSONParse = false;
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
-						//buildGeofences(sessionArray);
-						googleApiClient.connect();
+						mBuiltGeofences = false;
 
 					}
 					break;
@@ -290,29 +269,7 @@ public class MainActivity extends Activity implements
 		}
 
 	});
-
-	private void buildGeofences(JSONArray sessionArray) {
-		try {
-			// gets only the next session info to create the Geofence
-			JSONObject jsonGeoFenceRes = sessionArray.getJSONObject(0);
-			mCourseId = jsonGeoFenceRes.getString("course_name");
-			mGeoFenceLatitude = jsonGeoFenceRes.getDouble("lat");
-			mGeoFenceLongitude = jsonGeoFenceRes.getDouble("lng");
-			// This is a placeholder value
-			// Probably will set the radius to something else later
-			mGeoFenceRadius = 10;
-			mWaitingForJSONParse = false;
-
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// Don't add the geofence is Google Play is unavailabe, or if there is
-		// already one registered
-		
-	}
-
+	
 	private void logout() {
 		cardListContainer.removeAllViews(); // Remove all session cards.
 		UserAccount.logout(); // Clear the UserAccount.
@@ -323,46 +280,37 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
-		// TODO Auto-generated method stub
+		googleApiClient.connect();
 
 	}
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		/*Code for testing Geofences
-		locationRequest = LocationRequest.create();
-		locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-		locationRequest.setInterval(1000); // Update location every second
-
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                googleApiClient, locationRequest, MainActivity.this);
-        
-        //end code for testing geofences */
 		
 		if (!servicesConnected() || mBuiltGeofences) {
+			Log.d("OnConnected Error:", "services not connected or geofences were already built");
 			return;
 		}
-		while(mWaitingForJSONParse){ }
+		
+		//These are the test variables; Change them to whatever you prefer
+		double mTestLatitude = 39.9812170;
+		double mTestLongitude = -75.1637760;
+		sessionId = "1234567890";
+		
 		Geofence spareGeofence = new Geofence.Builder()
-				.setRequestId(mCourseId)
+				.setRequestId(sessionId)
 				.setTransitionTypes(
 						Geofence.GEOFENCE_TRANSITION_ENTER
 								| Geofence.GEOFENCE_TRANSITION_DWELL
 								| Geofence.GEOFENCE_TRANSITION_EXIT)
-				.setCircularRegion(mGeoFenceLatitude, mGeoFenceLongitude,
-						1)
-				.setLoiteringDelay(100000)
-				.setExpirationDuration(mGeoFenceExpirationDuration).build();
+				.setCircularRegion(mTestLatitude, mTestLongitude,
+						1000)
+				.setLoiteringDelay(5000)
+				.setExpirationDuration(Geofence.NEVER_EXPIRE).build();
+		
 		geofenceList.add(spareGeofence);
 		mBuiltGeofences = true;
 
-		try {
-			//geofenceapi.registerGeofences(geofenceList);
-			
-			
-		} catch (UnsupportedOperationException e) {
-			// Handle that previous request hasn't finished.
-		}
 		Intent intent = new Intent(this,
 				GeofenceTransitionService.class);
 		intent.putExtra("student_id", UserAccount.studentId);

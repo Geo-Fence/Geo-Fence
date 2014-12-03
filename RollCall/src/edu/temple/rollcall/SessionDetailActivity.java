@@ -133,6 +133,7 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 				//testing Check-In Feature of the API 
 				//TODO: add logic to see if class start time is close enough to current time 
 				// to allow user to checkIn
+				//TODO: change UI of Button session to reflect user sign-in
 				if(GeofenceTransitionService.canCheckIn()){
 					/* Should make an call to the server to add the current/logged-in student to 
 					 * the list of students currently attending the class
@@ -142,7 +143,6 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 					String studentId = GeofenceTransitionService.getStudentId();
 					String sessionId = GeofenceTransitionService.getSessionId();
 					API.checkIn(getBaseContext(), studentId, sessionId);
-					
 					
 				}
 				
