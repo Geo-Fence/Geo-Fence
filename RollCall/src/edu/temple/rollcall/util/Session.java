@@ -6,10 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
-import edu.temple.rollcall.util.api.API;
-
 import android.os.CountDownTimer;
-import android.util.Log;
 
 public class Session {
 	

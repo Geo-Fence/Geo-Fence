@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
-import edu.temple.rollcall.util.UserAccount;
 import edu.temple.rollcall.util.api.API;
 import android.location.Location;
 import android.os.Bundle;
