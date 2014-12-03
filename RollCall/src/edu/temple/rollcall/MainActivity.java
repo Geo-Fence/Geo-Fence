@@ -176,9 +176,7 @@ public class MainActivity extends Activity implements
 							MainActivity.this, UserAccount.studentId);
 					Message msg = Message.obtain();
 					msg.obj = response;
-					refreshFeedHandler.sendMessage(msg); // Send sessions from
-															// thread to
-															// listener.
+					refreshFeedHandler.sendMessage(msg); // Send sessions from thread to listener.
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -191,8 +189,7 @@ public class MainActivity extends Activity implements
 	Handler refreshFeedHandler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
-			refreshSpinner.setVisibility(View.GONE); // Remove the progress
-														// spinner.
+			refreshSpinner.setVisibility(View.GONE); // Remove the progress spinner.
 			JSONObject response = (JSONObject) msg.obj;
 			try {
 				String status = response.getString("status");
