@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.UserAccount;
 import edu.temple.rollcall.util.api.API;
 import android.location.Location;
 import android.os.Bundle;
@@ -180,6 +181,7 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
 				checkInButton.setText("Checked in");
 				checkInButton.setEnabled(false);
 			} else if (msg.obj.equals(String.valueOf(1062))) { // Already checked in
+				Toast.makeText(SessionDetailActivity.this, "Already checked in...", Toast.LENGTH_SHORT).show();
 				checkInButton.setText("Checked in");
 				checkInButton.setEnabled(false);
 			}
@@ -197,6 +199,7 @@ public class SessionDetailActivity extends FragmentActivity implements GoogleApi
             if (gMap != null) {
             	gMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(session.courseName));
             	gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 17));
+            	gMap.setMyLocationEnabled(true);
             }
         }
     }

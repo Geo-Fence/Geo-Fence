@@ -6,7 +6,10 @@ import java.util.concurrent.TimeUnit;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
+import edu.temple.rollcall.util.api.API;
+
 import android.os.CountDownTimer;
+import android.util.Log;
 
 public class Session {
 	
@@ -25,7 +28,7 @@ public class Session {
 	public SessionCountDownTimer timer;
 	public boolean checkedIn;
     
-    public Session(JSONObject jsonSession) {
+    public Session(final JSONObject jsonSession) {
     	this.jsonSession = jsonSession;
     	this.checkedIn = false;
     	
