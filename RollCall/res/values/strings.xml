@@ -24,5 +24,7 @@
     <string name="create_account_button">Create account</string>
     <string name="action_create_account">New account</string>
     <string name="check_in_button">Check in</string>
+    <string name="checked_in">Checked in</string>
+    <string name="miles_away">miles away</string>
 
 </resources>

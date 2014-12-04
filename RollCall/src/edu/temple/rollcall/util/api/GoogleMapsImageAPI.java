@@ -9,6 +9,7 @@ public class GoogleMapsImageAPI {
 		url += "size=" + width + "x" + height;
 		url += "&zoom=" + zoom;
 		url += "&center=" + lat + "," + lng;
+		url += "&markers=size:size:large|" + lat + "," + lng;
 		return url;
 	}
 }

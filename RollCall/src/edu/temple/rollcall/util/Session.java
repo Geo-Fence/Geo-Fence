@@ -22,12 +22,15 @@ public class Session {
     public double longitude;
 	public long startTimeMillis;
 	public long endTimeMillis;
+	
 	public SessionCountDownTimer timer;
-	public boolean checkedIn;
+	
+	public boolean canCheckIn;
+	public boolean isCheckedIn;
     
     public Session(final JSONObject jsonSession) {
     	this.jsonSession = jsonSession;
-    	this.checkedIn = false;
+    	this.isCheckedIn = false;
     	
     	try {
     		this.sessionId = jsonSession.getString("session_id");

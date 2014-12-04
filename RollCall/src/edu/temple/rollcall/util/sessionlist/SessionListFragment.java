@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import edu.temple.rollcall.SessionDetailActivity;
 import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.SessionList;
 
 import android.app.ListFragment;
 import android.content.Intent;
@@ -53,7 +54,7 @@ public class SessionListFragment extends ListFragment {
 			}
 		}
 
-		setListAdapter(new SessionListAdapter(getActivity(), sessionList));
+		setListAdapter(new SessionListAdapter(getActivity(), SessionList.getSessionList()));
 	}
 
 	@Override
@@ -64,10 +65,10 @@ public class SessionListFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Session session = sessionList.get(position);
-
+		Session session = SessionList.getSession(position);
+		
 		Intent intent = new Intent(getActivity(), SessionDetailActivity.class);
-		intent.putExtra("sessionInfo", session.toJSONString());
+		intent.putExtra("sessionId", session.sessionId);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}

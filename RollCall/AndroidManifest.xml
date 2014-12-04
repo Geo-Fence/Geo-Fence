@@ -56,10 +56,10 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD5P49mMdh70olpRlPeVBr8Fgc_78F3sXM" />
+            android:value="AIzaSyArCCBOD6fit5cISFJcmUvXPl4dW8zC-Fg" />
 
         <service
-            android:name=".GeofenceTransitionService"
+            android:name="edu.temple.rollcall.util.GeofenceTransitionService"
             android:exported="false" >
         </service>
     </application>

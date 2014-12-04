@@ -91,16 +91,13 @@ public class API  {
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
 	 * See checkout.php for more details.
 	 */
-	public static boolean checkOut(Context context, String student_id, String session_id) {
+	public static JSONObject checkOut(Context context, String student_id, String session_id) {
 		try {
 			String response = makeAPICall(context, "checkout.php?student_id=" + student_id + "&session_id=" + session_id);
-			if(response.equals("success")) {
-				return true;
-			}
-			return false;
+			return new JSONObject(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 	
@@ -150,7 +147,10 @@ public class API  {
 	/**
 	 * Create a new user.
 	 * @param context
-	 * @param enrollmentCode
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param password
 	 * @return On success, returns a JSON object containing "status":"ok".
 	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
 	 * 		   Errno 1062 means an account already exists for the provided email.
@@ -167,6 +167,25 @@ public class API  {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	/**
+	 * Create a new user.
+	 * @param context
+	 * @param enrollmentCode
+	 * @return On success, returns a JSON object containing "status":"ok".
+	 * 		   On failure, returns a JSON object containing "status":"error" and a MySQL error number called "errno".
+	 * 		   Errno 1062 means an account already exists for the provided email.
+	 * See php for more details.
+	 */
+	public static boolean isCheckedIn(Context context, String student_id, String session_id) {
+		try {
+			String response = makeAPICall(context, "ischeckedin.php?student_id=" + student_id + "&session_id=" + session_id);
+			return Boolean.valueOf(new JSONObject(response).getString("status"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

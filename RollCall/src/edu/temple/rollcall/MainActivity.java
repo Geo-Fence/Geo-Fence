@@ -1,6 +1,7 @@
 package edu.temple.rollcall;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -33,15 +34,17 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationServices;
 
+import edu.temple.rollcall.util.GeofenceTransitionService;
 import edu.temple.rollcall.util.RollCallUtil;
 import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.SessionList;
 import edu.temple.rollcall.util.UserAccount;
 import edu.temple.rollcall.util.api.API;
 import edu.temple.rollcall.util.sessionlist.EmptyFeedFragment;
 import edu.temple.rollcall.util.sessionlist.SessionListFragment;
 
 public class MainActivity extends Activity implements
-		ConnectionCallbacks, OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
+ConnectionCallbacks, OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
 
 	static final int LOGIN_REQUEST = 1111;
 
@@ -54,12 +57,12 @@ public class MainActivity extends Activity implements
 	List<Geofence> geofenceList = new ArrayList<Geofence>();
 	LocationClient locationClient;
 
-	private double mGeoFenceLatitude;
-	private double mGeoFenceLongitude;
-	private float mGeoFenceRadius = 100;
+//	private double mGeoFenceLatitude;
+//	private double mGeoFenceLongitude;
+//	private float mGeoFenceRadius = 100;
+//
+//	private String nextSessionId;
 
-	private String nextSessionId;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,8 +71,8 @@ public class MainActivity extends Activity implements
 		getActionBar().setDisplayShowHomeEnabled(false);
 
 		googleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(LocationServices.API).addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this).build();
+		.addApi(LocationServices.API).addConnectionCallbacks(this)
+		.addOnConnectionFailedListener(this).build();
 
 		refreshSpinner = (ProgressBar) findViewById(R.id.refresh_spinner);
 		cardListContainer = (FrameLayout) findViewById(R.id.card_layout_container);
@@ -90,9 +93,9 @@ public class MainActivity extends Activity implements
 
 	@Override
 	protected void onStart() {
-		
+
 		googleApiClient.connect();
-		
+
 		super.onStart();
 	}
 
@@ -142,17 +145,16 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case LOGIN_REQUEST: // Sent back from LoginActivity.
+
+		// Sent back from LoginActivity.
+		case LOGIN_REQUEST:
 			if (resultCode == RESULT_OK) {
 				refreshFeed();
 				break;
 			}
-		case RollCallUtil.REQUEST_CODE_RECOVER_PLAY_SERVICES: // Sent back from
-																// RollCallUtil
-																// after
-																// checking for
-																// google play
-																// services.
+
+			// Sent back from RollCallUtil after checking for google play services.
+		case RollCallUtil.REQUEST_CODE_RECOVER_PLAY_SERVICES:
 			if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Google Play Services must be installed.",
 						Toast.LENGTH_SHORT).show();
@@ -160,22 +162,24 @@ public class MainActivity extends Activity implements
 			}
 			return;
 		}
+
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	// Fetches sessions from API and refreshes card list.
+	// Fetches sessions from API and refreshes session card list.
 	private void refreshFeed() {
+
 		cardListContainer.removeAllViews(); // Remove existing cards.
 		refreshSpinner.setVisibility(View.VISIBLE); // Show a progress spinner.
+
 		Thread t = new Thread() {
 			@Override
 			public void run() {
 				try {
-					JSONObject response = API.getSessionsForStudent(
-							MainActivity.this, UserAccount.studentId);
+					JSONObject response = API.getSessionsForStudent(MainActivity.this, UserAccount.studentId);
 					Message msg = Message.obtain();
 					msg.obj = response;
-					refreshFeedHandler.sendMessage(msg); // Send sessions from thread to listener.
+					refreshFeedHandler.sendMessage(msg); // Send sessions back to UI thread.
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -186,34 +190,42 @@ public class MainActivity extends Activity implements
 
 	// Receives sessions from API thread in refreshFeed().
 	Handler refreshFeedHandler = new Handler(new Handler.Callback() {
+
 		@Override
 		public boolean handleMessage(Message msg) {
+
 			refreshSpinner.setVisibility(View.GONE); // Remove the progress spinner.
+
 			JSONObject response = (JSONObject) msg.obj;
+
 			try {
 				String status = response.getString("status");
 				switch (status) {
+
 				case "ok":
+
 					// If API call was successful but no sessions were returned,
 					// prompt the user to enroll in a course.
 					if (response.getJSONArray("sessionArray").isNull(0)) {
+
 						FragmentTransaction ft = getFragmentManager()
 								.beginTransaction();
 						ft.add(cardListContainer.getId(),
 								new EmptyFeedFragment());   // Add an
-															// EmptyFeedFragment
-															// to the container.
+						// EmptyFeedFragment
+						// to the container.
 						ft.commit();
-						
-					// Else, API call was successful and we have sessions.
+
+						// Else, API call was successful and we have sessions.
 					} else {
+
 						SessionListFragment cardListFragment = new SessionListFragment();
-						// Send the JSON array of sessions to the
-						// CardListFragment.
+
+						// Send the JSON array of sessions to the CardListFragment.
 						Bundle args = new Bundle();
 						args.putString("sessionArray",
 								response.getJSONArray("sessionArray")
-										.toString());
+								.toString());
 						cardListFragment.setArguments(args);
 
 						// Add the cardListFragment to the container view.
@@ -222,58 +234,49 @@ public class MainActivity extends Activity implements
 						ft.add(cardListContainer.getId(), cardListFragment);
 						ft.commit();
 
-						JSONArray sessionArray = new JSONArray(response
-								.getJSONArray("sessionArray").toString());
-						for (int i = 0; i < sessionArray.length(); i++) {
-							sessionList.add(new Session(sessionArray
-									.getJSONObject(i)));
+						// Update the SessionList class
+						JSONArray sessionArray = new JSONArray(response.getJSONArray("sessionArray").toString());
+						SessionList.update(sessionArray);
+						JSONArray checkedInIds = new JSONArray(response.getJSONArray("checkedInIds").toString());
+						for(int i = 0 ; i < checkedInIds.length() ; i++) {
+							SessionList.getSessionWithId(checkedInIds.getString(i)).isCheckedIn = true;
 						}
-						
-						// Create geofence for next session
-						try {
-							// gets only the next session info to create the Geofence
-							Session nextSession = sessionList.get(0);
-							nextSessionId = nextSession.sessionId;
-							mGeoFenceLatitude = nextSession.latitude;
-							mGeoFenceLongitude = nextSession.longitude;
-							mGeoFenceRadius = 1000;
 
-							if (servicesConnected()) {
+						// Create geofences for upcoming sessions
+						if(servicesConnected()) {
+							
+							for(int i = 0 ; i < SessionList.length() ; i++) {
 								
-								Geofence spareGeofence = new Geofence.Builder()
-								.setRequestId(nextSessionId)
+								Session session = SessionList.getSession(i);
+								
+								Geofence geofence = new Geofence.Builder()
+								.setRequestId(session.sessionId)
 								.setTransitionTypes(
 										Geofence.GEOFENCE_TRANSITION_ENTER
-												| Geofence.GEOFENCE_TRANSITION_DWELL
-												| Geofence.GEOFENCE_TRANSITION_EXIT)
-								.setCircularRegion(mGeoFenceLatitude, mGeoFenceLongitude,
-										mGeoFenceRadius)
-								.setLoiteringDelay(5000)
-								.setExpirationDuration(Geofence.NEVER_EXPIRE).build();
+										| Geofence.GEOFENCE_TRANSITION_EXIT)
+								.setCircularRegion(session.latitude, session.longitude, 1000)
+								.setExpirationDuration(session.startTimeMillis - new Date().getTime())
+								.build();
 								
-								geofenceList.add(spareGeofence);
-
-								Intent intent = new Intent(MainActivity.this,
-										GeofenceTransitionService.class);
-								intent.putExtra("student_id", UserAccount.studentId);
-								intent.putExtra("session_id", nextSessionId);
-								PendingIntent geofenceTransitionPendingIntent = PendingIntent
-										.getService(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-								LocationServices.GeofencingApi.addGeofences(googleApiClient, geofenceList, geofenceTransitionPendingIntent);
+								geofenceList.add(geofence);
 							}
 							
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							Intent intent = new Intent(MainActivity.this, GeofenceTransitionService.class);
+							
+							PendingIntent geofenceTransitionPendingIntent = PendingIntent
+									.getService(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+							LocationServices.GeofencingApi.addGeofences(googleApiClient, geofenceList, geofenceTransitionPendingIntent);
 						}
 					}
 					break;
-				case "error": // MySQL error in API call.
+
+				// MySQL error in API call.
+				case "error":
 					Log.d("MainActivity",
-							"MySQL error "
-									+ response.getString("errno").toString());
+							"MySQL error " + response.getString("errno").toString());
 					break;
 				}
+
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -281,7 +284,7 @@ public class MainActivity extends Activity implements
 		}
 
 	});
-	
+
 	private void logout() {
 		cardListContainer.removeAllViews(); // Remove all session cards.
 		UserAccount.logout(); // Clear the UserAccount.
@@ -293,7 +296,6 @@ public class MainActivity extends Activity implements
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
 		googleApiClient.connect();
-
 	}
 
 	@Override
@@ -317,13 +319,13 @@ public class MainActivity extends Activity implements
 	@Override
 	public void onConnectionSuspended(int arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
