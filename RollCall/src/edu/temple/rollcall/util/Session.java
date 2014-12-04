@@ -77,8 +77,6 @@ public class Session {
     		millis -= TimeUnit.HOURS.toMillis(hours);
     		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
     		
-    		days++;
-    		hours++;
     		minutes++;
     	
     		// Generates a grammatically correct phrase...
@@ -96,7 +94,7 @@ public class Session {
     				message += (minutes == 1) ? " minute" : " minutes";
     			}
     		} else {
-    			message += days;
+    			message += ++days;
     			message += (days > 1) ? " days" : " day";
     		}
     		this.output = message;
