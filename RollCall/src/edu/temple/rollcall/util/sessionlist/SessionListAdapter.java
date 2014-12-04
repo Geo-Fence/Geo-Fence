@@ -2,10 +2,17 @@ package edu.temple.rollcall.util.sessionlist;
 
 import java.util.Date;
 import java.util.List;
+
+import org.json.JSONObject;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import edu.temple.rollcall.MainActivity;
 import edu.temple.rollcall.R;
+import edu.temple.rollcall.util.GeofenceTransitionService;
 import edu.temple.rollcall.util.Session;
+import edu.temple.rollcall.util.UserAccount;
+import edu.temple.rollcall.util.api.API;
 import edu.temple.rollcall.util.api.GoogleMapsImageAPI;
 
 import android.content.Context;
@@ -16,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SessionListAdapter extends ArrayAdapter<Session> {
 	 
@@ -107,6 +115,24 @@ public class SessionListAdapter extends ArrayAdapter<Session> {
     	public void onFinish() {
     		// When session is over, remove the card.
     		adapter.removeTopSession();
+    		checkOut(session.sessionId);
+    	}
+    	
+    	private void checkOut(final String sessionId) {
+    		Thread t = new Thread() {
+    			@Override
+    			public void run() {
+    				try {
+    					JSONObject response = API.checkOut(getContext(), UserAccount.studentId, sessionId); 
+    					if(response.getString("status").equals("ok")) {
+    						Toast.makeText(getContext(), "Automatically checked out of session based on your location.", Toast.LENGTH_SHORT).show();
+    					}
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		};
+    		t.start();
     	}
     }
 }
