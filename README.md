@@ -1,4 +1,4 @@
-Geo-Fence
+Roll Call
 =========
 
 This attendance-keeping Android application allows students to check in to class sessions and records their attendance records for later review by professors or administrators. The application uses GPS geofencing to ensure that attendance records are accurate and reflect the actual time that students are present. All data is stored in a remote database, and the application communicates with the database using a custom-build API architecture built with MySQL, PHP, HTTP requests, and JSON encoding.
