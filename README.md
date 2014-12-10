@@ -20,7 +20,7 @@ A student arrives to class and opens the Roll Call app. The student sees a list 
 * MD5 encryption for user passwords
 * Google Play Services
   * Location Services API
-  * FusedLocationProviderApi
-* GeofencingApi
+   * FusedLocationProviderApi
+   * GeofencingApi
 * Google Maps Image API for static map thumbnails
 * Custom card list UI using fragments
